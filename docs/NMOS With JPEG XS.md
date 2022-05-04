@@ -30,7 +30,7 @@ This has been permitted since IS-04 v1.1.
 
 Nodes implementing [BCP-004-01][] Receiver Capabilities use the existing `constraint_sets` parameter within the `caps` object, describing combinations of frame rates, width and height, and other parameters which the receiver can support, using the parameter constraints defined in the [Capabilities register](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/) of the [NMOS Parameter Registers][].
 
-If the Receiver supports streams meeting the traffic shaping and delivery timing requirements for ST 2110-22, it SHOULD use the `urn:x-nmos:cap:transport:st2110_21_sender_type` parameter constraint.
+[abouchar: this is under the conditional "Nodes implementing [BCP-004-01][] Receiver Capabilities" and should be part of the previoius paragraph.] If the Receiver supports streams meeting the traffic shaping and delivery timing requirements for ST 2110-22, it SHOULD use the `urn:x-nmos:cap:transport:st2110_21_sender_type` parameter constraint.
 
 An example Receiver resource is provided in the [Examples](../examples/).
 
@@ -40,7 +40,7 @@ Nodes capable of transmitting JPEG XS video streams MUST have Sender, Flow and S
 
 ### Senders
 
-The Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute.
+The Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. [abouchar: what if using new transport like NDI and SRT?]
 Sender resources provide no indication of media type or format, since this is described by the associated Flow resource.
 
 The SDP file at the `manifest_href` MUST comply with the requirements of RFC 9134.
