@@ -1,4 +1,4 @@
-# AMWA BCP-006-01: NMOS With JPEG XS
+# AMWA BCP-006-02: NMOS With H.264
 {:.no_toc}
 
 * A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
@@ -6,13 +6,13 @@
 
 _(c) AMWA 2021, CC Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)_
 
-[JPEG XS][JPEG-XS] is a technology standardized in ISO/IEC 21122 for video contribution at low latency with very high video quality.
-A companion RTP payload format specification was developed through the IETF Payloads working group, IETF [RFC 9134][RFC-9134].
+[H.264][H.264] is a technology standardized in Rec. ITU-T H.264 (08/2021) for video contribution at high compression rate and video quality.
+A companion RTP payload format specification was developed through the IETF Payloads working group, IETF [RFC 6184][RFC-6184].
 
-The [Video Services Forum][VSF] developed Technical Recommendation [TR-08][], which covers the end-to-end application use of JPEG XS compression for video, alongside uncompressed audio and VANC, using the SMPTE ST 2110 suite of protocols.
-TR-08 mandates the use of the AMWA [IS-04][] and [IS-05][] NMOS Specifications in TR-08 compliant systems.  
+The [Video Services Forum][VSF] developed Technical Recommendation [TR-??][] and [TR-??][] of the IPMX suite of protocols, which cover the end-to-end application use of constant and variable bitrate compression for video, using the SMPTE ST 2110 and IPMX suite of protocols.
+TR-?? and TR-?? mandate the use of the AMWA [IS-04][] and [IS-05][] NMOS Specifications in IPMX compliant systems.  
 
-AMWA IS-04 and IS-05 already have support for RTP transport and can signal the media type `video/jxsv` as defined in RFC 9134.  
+AMWA IS-04 and IS-05 already have support for RTP transport and can signal the media type `video/h264` as defined in RFC 6184.
 
 ## Use of Normative Language
 
@@ -23,24 +23,24 @@ and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119]
 
 The NMOS terms 'Node', 'Source', 'Flow', 'Sender', 'Receiver' are used as defined in the [NMOS Glossary](https://specs.amwa.tv/nmos/main/docs/Glossary.html).
 
-## JPEG XS IS-04 Sources, Flows and Senders
+## H.264 IS-04 Sources, Flows and Senders
 
-Nodes capable of transmitting JPEG XS video streams MUST have Source, Flow and Sender resources in the IS-04 Node API.
+Nodes capable of transmitting H.264 video streams MUST have Source, Flow and Sender resources in the IS-04 Node API.
 
 ### Sources
 
 The Source resource MUST indicate `urn:x-nmos:format:video` for the `format`.
 Source resources can be associated with many Flows at the same time.
-The Source is therefore unaffected by the use of JPEG XS compression.
+The Source is therefore unaffected by the use of H.264 compression.
 
 ### Flows
 
-The Flow resource MUST indicate `video/jxsv` in the `media_type` attribute, and `urn:x-nmos:format:video` for the `format`.
+The Flow resource MUST indicate `video/h264` in the `media_type` attribute, and `urn:x-nmos:format:video` for the `format`.
 This has been permitted since IS-04 v1.1.
 
 For Nodes implementing IS-04 v1.3 or higher, the following additional requirements on the Flow resource apply.
 
-In addition to those attributes defined in IS-04 for all coded video Flows, the following attributes defined in the [Flow Attributes register](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/) of the [NMOS Parameter Registers][] are used for JPEG XS.
+In addition to those attributes defined in IS-04 for all coded video Flows, the following attributes defined in the [Flow Attributes register](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/) of the [NMOS Parameter Registers][] are used for H.264.
 
 These attributes provide information for Controllers and Users to evaluate stream compatibility between Senders and Receivers.
 
