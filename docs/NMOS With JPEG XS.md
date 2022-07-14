@@ -55,60 +55,57 @@ These attributes provide information for Controllers and Users to evaluate strea
   The Flow resource MUST indicate the JPEG XS level, which defines a lower bound on the required throughput for a decoder in the image (or decoded) domain.
   The permitted `level` values are strings, defined as per RFC 9134.
   The Unrestricted level is indicated by omitting this attribute.
-- [Sublevel](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#sublevel)  
-  The Flow resource MUST indicate the JPEG XS sublevel, which defines a lower bound on the required throughput for a decoder in the codestream (or coded) domain.
-  The permitted `sublevel` values are strings, defined as per RFC 9134.
-  The Unrestricted sublevel is indicated by omitting this attribute.
 - [Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#bit-rate)  
-  The Flow resource MUST indicate the target bit rate (kilobits/second) of the codestream.
+  The Flow resource MUST indicate the target bit rate (kilobits/second) of the bitstream.
   The `bit_rate` integer value is expressed in units of 1000 bits per second, rounding up.
 
 An example Flow resource is provided in the [Examples](../examples/).
 
 ### Senders
 
-The Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute.
+The Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. TODO: ass ndi and srt transport when their specification is available.
 Sender resources provide no indication of media type or format, since this is described by the associated Flow resource.
 
-The SDP file at the `manifest_href` MUST comply with the requirements of RFC 9134.
+The SDP file at the `manifest_href` MUST comply with the requirements of RFC 6184.
 If the Sender meets the traffic shaping and delivery timing requirements specified for ST 2110-22, the SDP file MUST also comply with the provisions of ST 2110-22.
 
 For Nodes implementing IS-04 v1.3 or higher, the following additional requirements on the Sender resource apply.
 
-In addition to those attributes defined in IS-04 for Senders, the following attributes defined in the [Sender Attributes register](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/) of the NMOS Parameter Registers are used for JPEG XS.
+In addition to those attributes defined in IS-04 for Senders, the following attributes defined in the [Sender Attributes register](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/) of the NMOS Parameter Registers are used for H.264.
 
 - [Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#bit-rate)  
   The Sender resource MUST indicate the bit rate (kilobits/second) including the RTP transport overhead.
   The `bit_rate` integer value is expressed in units of 1000 bits per second, rounding up.
-  The value is for the IP packets, so for the RTP payload format per RFC 9134, that includes the RTP, UDP and IP packet headers and the payload.  
+  The value is for the IP packets, so for the RTP payload format per RFC 6184, that includes the RTP, UDP and IP packet headers and the payload.  
   Informative note: This definition is consistent with the definition of the bit rate attribute required by ST 2110-22 in the SDP media description.
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#packet-transmission-mode)  
-  If the Sender is using the slice packetization mode, it MUST include the `packet_transmission_mode` attribute.
-  Since the default value of this attribute is `codestream`, the Sender MAY omit this attribute when using codestream packetization.
+  If the Sender is using the single or interleaved packetization mode, it MUST include the `packet_transmission_mode` attribute and set it to either `single_nal_unit` or `interleaved_nal_units`.
+  Since the default value of this attribute is `non_interleaved_nal_units`, the Sender MAY omit this attribute when using non-interleaved packetization.
 - [ST 2110-21 Sender Type](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#st-2110-21-sender-type)  
   If the Sender complies with the traffic shaping and delivery timing requirements for ST 2110-22, it MUST include the `st2110_21_sender_type` attribute.
 
 An example Sender resource is provided in the [Examples](../examples/).
 
-## JPEG XS IS-04 Receivers
+## H.264 IS-04 Receivers
 
-Nodes capable of receiving JPEG XS video streams MUST have a Receiver resource in the IS-04 Node API, which lists `video/jxsv` in the `media_types` array within the `caps` object.
+Nodes capable of receiving H.264 video streams MUST have a Receiver resource in the IS-04 Node API, which lists `video/h264` in the `media_types` array within the `caps` object.
 This has been permitted since IS-04 v1.1.
 
-If the Receiver has limitations on the JPEG XS video streams that it supports, the Receiver resource MUST indicate constraints in accordance with the [BCP-004-01][] Receiver Capabilities specification.
+If the Receiver has limitations or perferences on the H.264 video streams that it supports, the Receiver resource MUST indicate constraints in accordance with the [BCP-004-01][] Receiver Capabilities specification.
 The `constraint_sets` parameter within the `caps` object can be used to describe combinations of frame rates, width and height, and other parameters which the receiver can support, using the parameter constraints defined in the [Capabilities register](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/) of the NMOS Parameter Registers.
 
-The following parameter constraints can be used to express limits specifically defined by ISO/IEC 21122 and RFC 9134 for JPEG XS decoders:
+The following parameter constraints can be used to express limits specifically defined by Rec. ITU-T H.264 and RFC 6184 for H.264 decoders:
 
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#profile)
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#level)
-- [Sublevel](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sublevel)  
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#packet-transmission-mode)  
+- [Redundant Picture](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#redundant-picture)
+-  [In-Band Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#in-band-parameter-sets)
+-  [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) TODO: sar-understood should be assumed to match sar-supported
 
-When the JPEG XS decoder supports the Unrestricted profile, level or sublevel, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01.
-When the decoder does not support Unrestricted but supports a range of profiles, levels or sublevels, the `enum` Constraint Keyword can be used to indicate the acceptable values.
+When the H.264 decoder supports has not restriction of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels need not be enumerated.
 
-Other existing parameter constraints, such as the following, are also appropriate to express limitations on supported JPEG XS video streams:
+Other existing parameter constraints, such as the following, are also appropriate to express limitations on supported H.264 video streams:
 
 - [Frame Width](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#frame-width)
 - [Frame Height](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#frame-height)
@@ -118,23 +115,23 @@ Other existing parameter constraints, such as the following, are also appropriat
 - [Transport Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#transport-bit-rate)
 - [ST 2110-21 Sender Type](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#st-2110-21-sender-type)
 
-An example Receiver resource is provided in the [Examples](../examples/) that demonstrates how to represent VSF TR-08 interoperability points using these parameter constraints.
+An example Receiver resource is provided in the [Examples](../examples/).
 
-## JPEG XS IS-05 Senders and Receivers
+## H.264 IS-05 Senders and Receivers
 
 Connection Management using IS-05 proceeds in exactly the same manner as for any other stream format carried within RTP.
-The SDP file at the **/transportfile** endpoint on Senders MUST comply with the requirements of RFC 9134 and, if appropriate, ST 2110-22.
+The SDP file at the **/transportfile** endpoint on Senders MUST comply with the requirements of RFC 6184 and, if appropriate, ST 2110-22.
 
-An SDP file provided in the `transport_file` attribute of a `PATCH` request on the **/staged** endpoint of Receivers MUST also comply with RFC 9134 and, if appropriate, ST 2110-22.
+An SDP file provided in the `transport_file` attribute of a `PATCH` request on the **/staged** endpoint of Receivers MUST also comply with RFC 6184 and, if appropriate, ST 2110-22.
 
 An example SDP file is provided in the [Examples](../examples/).
 
 [BCP-004-01]: https://specs.amwa.tv/bcp-004-01/ "AMWA BCP-004-01 NMOS Receiver Capabilities"
-[JPEG-XS]: https://jpeg.org/jpegxs/ "Overview of JPEG XS"
+[H.264]: https://www.itu.int/rec/T-REC-H.264/ " Advanced video coding for generic audiovisual services"
 [RFC-2119]: https://tools.ietf.org/html/rfc2119 "Key words for use in RFCs"
-[RFC-9134]: https://tools.ietf.org/html/rfc9134 "RTP Payload Format for ISO/IEC 21122 (JPEG XS)"
+[RFC-6184]: https://tools.ietf.org/html/rfc6184 "RTP Payload Format for H.264 Video"
 [IS-04]: https://specs.amwa.tv/is-04/ "AMWA IS-04 NMOS Discovery and Registration Specification"
 [IS-05]: https://specs.amwa.tv/is-05/ "AMWA IS-05 NMOS Device Connection Management Specification"
 [NMOS Parameter Registers]: https://specs.amwa.tv/nmos-parameter-registers/ "Common parameter values for AMWA NMOS Specifications"
-[TR-08]: https://vsf.tv/download/technical_recommendations/VSF_TR-08_2022-04-20.pdf "Transport of JPEG XS Video in ST 2110-22"
+[TR-??]: https://vsf.tv/download/technical_recommendations/VSF_TR-??_2022-04-20.pdf ""
 [VSF]: https://vsf.tv/ "Video Services Forum"
