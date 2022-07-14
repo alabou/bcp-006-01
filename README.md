@@ -1,7 +1,7 @@
-# \[Work In Progress\] AMWA BCP-006-01: NMOS With JPEG XS
+# \[Work In Progress\] AMWA BCP-006-02: NMOS With H.264
 
-[![Lint Status](https://github.com/AMWA-TV/bcp-006-01/workflows/Lint/badge.svg)](https://github.com/AMWA-TV/bcp-006-01/actions?query=workflow%3ALint)
-[![Render Status](https://github.com/AMWA-TV/bcp-006-01/workflows/Render/badge.svg)](https://github.com/AMWA-TV/bcp-006-01/actions?query=workflow%3ARender)
+[![Lint Status](https://github.com/AMWA-TV/bcp-006-02/workflows/Lint/badge.svg)](https://github.com/AMWA-TV/bcp-006-02/actions?query=workflow%3ALint)
+[![Render Status](https://github.com/AMWA-TV/bcp-006-02/workflows/Render/badge.svg)](https://github.com/AMWA-TV/bcp-006-02/actions?query=workflow%3ARender)
 
 This repository holds the source for this Specification, part of the family of [Networked Media Open Specifications](https://specs.amwa.tv/nmos) from the [Advanced Media Workflow Association](https://amwa.tv)
 
@@ -9,17 +9,17 @@ This repository holds the source for this Specification, part of the family of [
 
 ### What does it do?
 
-- Enables Registration, Discovery, and Connection Management of [JPEG XS](https://jpeg.org/jpegxs/) Endpoints using the AMWA IS-04 and IS-05 NMOS Specifications.
+- Enables Registration, Discovery, and Connection Management of H.264 Endpoints using the AMWA IS-04 and IS-05 NMOS Specifications.
 
 ### Why does it matter?
 
-- It helps ensure consistency between implementations offering NMOS control for JPEG XS endpoints.
+- It helps ensure consistency between implementations offering NMOS control for H.264 endpoints.
 
 ### How does it work?
 
-- It specifies what resources and attributes MUST be provided when using NMOS with JPEG XS streams.
+- It specifies what resources and attributes MUST be provided when using NMOS with H.264 streams.
 - It specifies requirements for SDP files.
-- It provides examples of how to use IS-04 and IS-05 in the context of JPEG XS streams - specifically JPEG XS encapsulated in RTP as described in IETF [RFC 9134](https://tools.ietf.org/html/rfc9134).
+- It provides examples of how to use IS-04 and IS-05 in the context of H.264 streams - specifically H.264 encapsulated in RTP as described in IETF [RFC 6184](https://tools.ietf.org/html/rfc6184).
 
 <!-- INTRO-END -->
 
