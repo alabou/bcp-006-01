@@ -1,10 +1,10 @@
-amwa_id: BCP-006-01
-url: https://specs.amwa.tv/bcp-006-01
-name: NMOS With JPEG XS
+amwa_id: BCP-006-02
+url: https://specs.amwa.tv/bcp-006-02
+name: NMOS With H.264
 status: Work In Progress
-repo_name: bcp-006-01
-alt_repo_name: nmos-jpeg-xs
-repo_url: https://github.com/AMWA-TV/bcp-006-01
+repo_name: bcp-006-02
+alt_repo_name: nmos-h264
+repo_url: https://github.com/AMWA-TV/bcp-006-02
 releases:
 default_branch: v1.0-dev
 show_in_index: false
