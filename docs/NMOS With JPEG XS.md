@@ -66,7 +66,7 @@ An example Flow resource is provided in the [Examples](../examples/).
 The Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. TODO: ass ndi and srt transport when their specification is available.
 Sender resources provide no indication of media type or format, since this is described by the associated Flow resource.
 
-The SDP file at the `manifest_href` MUST comply with the requirements of RFC 6184.
+The SDP file at the `manifest_href` MUST comply with the requirements of RFC 6184 in the [Declarative Session Description](https://datatracker.ietf.org/doc/html/rfc6184#section-8.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 6184 is not supported. The "fmtp" source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported. 
 If the Sender meets the traffic shaping and delivery timing requirements specified for ST 2110-22, the SDP file MUST also comply with the provisions of ST 2110-22.
 
 For Nodes implementing IS-04 v1.3 or higher, the following additional requirements on the Sender resource apply.
@@ -79,7 +79,7 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
   The value is for the IP packets, so for the RTP payload format per RFC 6184, that includes the RTP, UDP and IP packet headers and the payload.  
   Informative note: This definition is consistent with the definition of the bit rate attribute required by ST 2110-22 in the SDP media description.
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#packet-transmission-mode)  
-  If the Sender is using the single or interleaved packetization mode, it MUST include the `packet_transmission_mode` attribute and set it to either `single_nal_unit` or `interleaved_nal_units`.
+  If the Sender is using the single or interleaved packetization mode, it MUST include the `packet_transmission_mode` attribute and set it to either `single_nal_unit` or `interleaved_nal_units`. The packet_transmission_mode attribute map the the RFC 6184 packetization-mode with `single_nal_unit` corresponding to value 0, `non_interleaved_nal_units` to value 1 and `interleaved_nal_units` to value 2.
   Since the default value of this attribute is `non_interleaved_nal_units`, the Sender MAY omit this attribute when using non-interleaved packetization.
 - [ST 2110-21 Sender Type](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#st-2110-21-sender-type)  
   If the Sender complies with the traffic shaping and delivery timing requirements for ST 2110-22, it MUST include the `st2110_21_sender_type` attribute.
@@ -94,14 +94,15 @@ This has been permitted since IS-04 v1.1.
 If the Receiver has limitations or perferences on the H.264 video streams that it supports, the Receiver resource MUST indicate constraints in accordance with the [BCP-004-01][] Receiver Capabilities specification.
 The `constraint_sets` parameter within the `caps` object can be used to describe combinations of frame rates, width and height, and other parameters which the receiver can support, using the parameter constraints defined in the [Capabilities register](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/) of the NMOS Parameter Registers.
 
-The following parameter constraints can be used to express limits specifically defined by Rec. ITU-T H.264 and RFC 6184 for H.264 decoders:
+The following parameter constraints can be used to express limits or preferences specifically defined by Rec. ITU-T H.264 and RFC 6184 for H.264 decoders:
 
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#profile)
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#level)
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#packet-transmission-mode)  
 - [Redundant Picture](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#redundant-picture)
--  [In-Band Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#in-band-parameter-sets)
--  [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) TODO: sar-understood should be assumed to match sar-supported
+- [MultiFlow Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#multiflow-parameter-sets)
+- [In-Band Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#in-band-parameter-sets)
+- [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) TODO: sar-understood should be assumed to match sar-supported
 
 When the H.264 decoder supports has not restriction of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels need not be enumerated.
 
