@@ -52,7 +52,7 @@ These attributes provide information for Controllers and Users to evaluate strea
   The Flow resource MUST indicate the color (sub-)sampling using the `components` attribute.
   The `components` array value corresponds to the `sampling`, `width` and `height` values in the SDP format-specific parameters defined by RFC 9134.
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#profile)  
-  The Flow resource MUST indicate the JPEG XS profile, which defines limits on the required algorithmic features and parameter ranges used in the codestream.
+  The Flow resource MUST indicate the H.264 profile, which defines limits on the required algorithmic features and parameter ranges used in the codestream.
   The permitted `profile` values are strings, defined as per ITU-T Rec. H.264 Annex A
   - "ConstrainedBaseline"
   - "Baseline" (Default is not specified) 
@@ -71,7 +71,7 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "CAVLCIntra-444"
   
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#level)  
-  The Flow resource MUST indicate the JPEG XS level, which defines a lower bound on the required throughput for a decoder in the image (or decoded) domain.
+  The Flow resource MUST indicate the H.264 level, which defines a lower bound on the required throughput for a decoder in the image (or decoded) domain.
   The permitted `level` values are strings, defined as per ITU-T Rec. H.264 Annex A
   - "1" (Default is not specified) 
   - "1b", "1.1", "1.2", "1.3"
