@@ -62,6 +62,8 @@ These attributes provide information for Controllers and Users to evaluate strea
 - [Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#bit-rate)  
   The Flow resource MUST indicate the target bit rate (kilobits/second) of the bitstream.
   The `bit_rate` integer value is expressed in units of 1000 bits per second, rounding up.
+  
+- [ ] TODO: Indicate that the bit-rate SHALL comply with assocaited declaration within the bitstream, if any (ex. hrd_parameters of the bitstream).
 
 An example Flow resource is provided in the [Examples](../examples/).
 
@@ -90,6 +92,8 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
   Since the default value of this attribute is `non_interleaved_nal_units`, the Sender MAY omit this attribute when using non-interleaved packetization.
 - [ST 2110-21 Sender Type](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#st-2110-21-sender-type)  
   If the Sender complies with the traffic shaping and delivery timing requirements for ST 2110-22, it MUST include the `st2110_21_sender_type` attribute.
+
+- [ ] TODO: Indicate that the bit-rate SHALL comply with assocaited declaration within the bitstream, if any (ex. hrd_parameters of the bitstream).
 
 An example Sender resource is provided in the [Examples](../examples/).
 
