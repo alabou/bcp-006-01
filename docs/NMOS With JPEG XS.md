@@ -63,7 +63,7 @@ An example Flow resource is provided in the [Examples](../examples/).
 
 ### Senders
 
-The Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. TODO: ass ndi and srt transport when their specification is available.
+The Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. TODO: add ndi and srt transport when the specification is available.
 Sender resources provide no indication of media type or format, since this is described by the associated Flow resource.
 
 The SDP file at the `manifest_href` MUST comply with the requirements of RFC 6184 in the [Declarative Session Description](https://datatracker.ietf.org/doc/html/rfc6184#section-8.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 6184 is not supported. The "fmtp" source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported. 
@@ -126,6 +126,21 @@ The SDP file at the **/transportfile** endpoint on Senders MUST comply with the 
 An SDP file provided in the `transport_file` attribute of a `PATCH` request on the **/staged** endpoint of Receivers MUST also comply with RFC 6184 and, if appropriate, ST 2110-22.
 
 An example SDP file is provided in the [Examples](../examples/).
+
+#### Out-of-band transporting of parameter sets through the SDP transport file
+
+The initial active the parameter sets (SPS, PPS) of the `sprop-parameter-sets` attribute of an SDP transport file SHALL comply with the Flow associated with the Sender on activation and the related parameters of the `fmtp=` attribute of the SDP transport file (Ex. ST2110-22 requires the parameters width, height, exactframerate, TP, mediaclk, ts-refclk and b= to be declared in the SDP transport file). A Sender MAY provide many out-of-band parameter sets in the SDP transport file.
+
+The parameters of the `fmtp=` attribute of the SDP transport file related to the current active parameter sets MAY keep their initial value related to the initial active parameter sets when a Sender's current active parameter sets change after activation among the parameter sets declared in the `sprop-parameter-sets` attribute. While swiching among the parameter sets the Sender MUST update the associated Flow to comply with the current active parameter sets.
+
+A Sender MAY seamlessly switch among the out-of-band parameter sets dynamically, provided that the Flow associated with the Sender changes accordingly and the content of the SDP transport file does not change. If the content of the SDP transport file changes, the Sender SHALL comply with IS-04, IS-05.
+
+A Receiver infers updated SDP transport file parameters from the current active parameter sets. The SDP transport file of the Sender is not allowed to change in order to benefit from the seamless transitions between parameter sets.  If the content of the Sender's SDP transport file changes, the Receiver SHALL comply with IS-04, IS-05. A Receiver declaring the multiflow-parameter-sets capability SHOULD verify that all the parameter sets of the SDP transport file comply with the Receiver Capabilities, infering the parameters of the `fmtp=` attribute from the paremeter sets for each possibly active parameter sets. A Receiver not supporting the multiflow-parameter-sets capability SHOULD verify that only one active parameter sets is declared in the `sprop-parameter-sets` attribute.
+
+Note to IPMX: An IPMX H.264 stream will not be able to benefit from the seamless transitions of parameter sets because of the attributes measuredpixclk, htotal and vtotal that are part of the SDP transport file and that cannot be inferred from the parameter sets. 
+
+The in-band-parameter-sets Receiver Capabilities indicate if a Receiver supports getting new or updated parameter sets in-band. The same rules apply with the exception that the parameter sets are not required to be provided in the SDP transport file but are allowed to be transmitted dynamically along with the media bitstream to the Receiver. 
+
 
 [BCP-004-01]: https://specs.amwa.tv/bcp-004-01/ "AMWA BCP-004-01 NMOS Receiver Capabilities"
 [H.264]: https://www.itu.int/rec/T-REC-H.264/ " Advanced video coding for generic audiovisual services"
