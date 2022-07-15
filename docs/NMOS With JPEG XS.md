@@ -53,12 +53,34 @@ These attributes provide information for Controllers and Users to evaluate strea
   The `components` array value corresponds to the `sampling`, `width` and `height` values in the SDP format-specific parameters defined by RFC 9134.
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#profile)  
   The Flow resource MUST indicate the JPEG XS profile, which defines limits on the required algorithmic features and parameter ranges used in the codestream.
-  The permitted `profile` values are strings, defined as per RFC 9134.
-  The Unrestricted profile is indicated by omitting this attribute.
+  The permitted `profile` values are strings, defined as per ITU-T Rec. H.264 Annex A
+  - "ConstrainedBaseline"
+  - "Baseline" (Default is not specified) 
+  - "Main"
+  - "Etended"
+  - "High"
+  - "HighProgressive"
+  - "ConstrainedHigh"
+  - "High10"
+  - "High10Progressive"
+  - "High-422"
+  - "HighPredictive-444"
+  - "High10Intra"
+  - "HighIntra-422"
+  - "HighIntra-422"
+  - "CAVLCIntra-444"
+  
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#level)  
   The Flow resource MUST indicate the JPEG XS level, which defines a lower bound on the required throughput for a decoder in the image (or decoded) domain.
-  The permitted `level` values are strings, defined as per RFC 9134.
-  The Unrestricted level is indicated by omitting this attribute.
+  The permitted `level` values are strings, defined as per ITU-T Rec. H.264 Annex A
+  - "1" (Default is not specified) 
+  - "1b", "1.1", "1.2", "1.3"
+  - "2", "2.1", "2.2"
+  - "3", "3.1", "3.2"
+  - "4", "4.1", "4.2"
+  - "5", "5.1", "5.2"
+  - "6", "6.1", "6.2" 
+
 - [Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#bit-rate)  
   The Flow resource MUST indicate the target bit rate (kilobits/second) of the bitstream.
   The `bit_rate` integer value is expressed in units of 1000 bits per second, rounding up.
