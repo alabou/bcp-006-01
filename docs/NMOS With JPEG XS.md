@@ -131,15 +131,26 @@ An example SDP file is provided in the [Examples](../examples/).
 
 The initial active the parameter sets (SPS, PPS) of the `sprop-parameter-sets` attribute of an SDP transport file SHALL comply with the Flow associated with the Sender on activation and the related parameters of the `fmtp=` attribute of the SDP transport file (Ex. ST2110-22 requires the parameters width, height, exactframerate, TP, mediaclk, ts-refclk and b= to be declared in the SDP transport file). A Sender MAY provide many out-of-band parameter sets in the SDP transport file.
 
+As per RFC 6184 the out-of-band parameter sets MUST comply with the profile and level declared in the SDP transport file and the associated Flow.
+
 The parameters of the `fmtp=` attribute of the SDP transport file related to the current active parameter sets MAY keep their initial value related to the initial active parameter sets when a Sender's current active parameter sets change after activation among the parameter sets declared in the `sprop-parameter-sets` attribute. While swiching among the parameter sets the Sender MUST update the associated Flow to comply with the current active parameter sets.
 
 A Sender MAY seamlessly switch among the out-of-band parameter sets dynamically, provided that the Flow associated with the Sender changes accordingly and the content of the SDP transport file does not change. If the content of the SDP transport file changes, the Sender SHALL comply with IS-04, IS-05.
 
-A Receiver infers updated SDP transport file parameters from the current active parameter sets. The SDP transport file of the Sender is not allowed to change in order to benefit from the seamless transitions between parameter sets.  If the content of the Sender's SDP transport file changes, the Receiver SHALL comply with IS-04, IS-05. A Receiver declaring the multiflow-parameter-sets capability SHOULD verify that all the parameter sets of the SDP transport file comply with the Receiver Capabilities, infering the parameters of the `fmtp=` attribute from the paremeter sets for each possibly active parameter sets. A Receiver not supporting the multiflow-parameter-sets capability SHOULD verify that only one active parameter sets is declared in the `sprop-parameter-sets` attribute.
+A Receiver infers updated SDP transport file parameters from the current active parameter sets. The SDP transport file of the Sender is not allowed to change in order to benefit from the seamless transitions between parameter sets.  If the content of the Sender's SDP transport file changes, the Receiver SHALL comply with IS-04, IS-05. 
+
+A Receiver declaring the `multiflow_parameter_sets` capability SHOULD verify that all the parameter sets of the SDP transport file comply with the Receiver Capabilities, infering the parameters of the `fmtp=` attribute from the paremeter sets for each possibly active parameter sets. A Receiver not supporting the -`multiflow_parameter_sets` capability SHOULD verify that only one active parameter sets is declared in the `sprop-parameter-sets` attribute.
 
 Note to IPMX: An IPMX H.264 stream will not be able to benefit from the seamless transitions of parameter sets because of the attributes measuredpixclk, htotal and vtotal that are part of the SDP transport file and that cannot be inferred from the parameter sets. 
 
-The in-band-parameter-sets Receiver Capabilities indicate if a Receiver supports getting new or updated parameter sets in-band. The same rules apply with the exception that the parameter sets are not required to be provided in the SDP transport file but are allowed to be transmitted dynamically along with the media bitstream to the Receiver. 
+#### In-band transporting of parameter sets through the media bitstream
+
+The `in_band_parameter_sets` Receiver Capabilities indicate that a Receiver supports getting additional parameter sets in-band. A Receiver SHALL declare the `multiflow_parameter_sets` capability along with the `in_band_parameter_sets` capability. A Sender MUST provide an initial active parameter sets in the SDP transport file `sprop-parameter-sets` attribute.
+
+As per RFC 6184 the out-of-band and in-band parameter sets MUST comply with the profile and level declared in the SDP transport file and the associated Flow.
+
+A Receiver SHOULD verify that the current active parameter sets comply with the Receiver Capabilities, infering the parameters of the `fmtp=` attribute of the SDP transport file from the curent active parameter sets.
+
 
 
 [BCP-004-01]: https://specs.amwa.tv/bcp-004-01/ "AMWA BCP-004-01 NMOS Receiver Capabilities"
