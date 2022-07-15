@@ -14,6 +14,10 @@ TR-?? and TR-?? mandate the use of the AMWA [IS-04][] and [IS-05][] NMOS Specifi
 
 AMWA IS-04 and IS-05 already have support for RTP transport and can signal the media type `video/h264` as defined in RFC 6184.
 
+- [ ] TODO: Current ST-2110 suite of protocols only support constant bit-rate streams. An new protocol for variable bit-rate is required.
+- [ ] TODO: Do we really want to have IPMX protocol here or limite to actual ST-2110 protocols which IPMX uses.
+- [ ] TODO: References are made to the ITU-T H.264 specification instead of the ISO becase it is more accessible (free).
+
 ## Use of Normative Language
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
@@ -107,7 +111,9 @@ The following parameter constraints can be used to express limits or preferences
 - [Redundant Picture](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#redundant-picture)
 - [MultiFlow Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#multiflow-parameter-sets)
 - [In-Band Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#in-band-parameter-sets)
-- [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) TODO: sar-understood should be assumed to match sar-supported
+- [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) 
+
+- [ ] TODO: sar-understood should be assumed to match sar-supported
 
 When the H.264 decoder has not restriction of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels need not be enumerated.
 
