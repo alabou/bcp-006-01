@@ -52,7 +52,7 @@ These attributes provide information for Controllers and Users to evaluate strea
   The Flow resource MUST indicate the color (sub-)sampling using the `components` attribute.
   The `components` array value corresponds to the `sampling`, `width` and `height` values in the SDP format-specific parameters defined by RFC 9134.
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#profile)  
-  The Flow resource MUST indicate the H.264 profile, which defines limits on the required algorithmic features and parameter ranges used in the codestream.
+  The Flow resource MUST indicate the H.264 profile, which defines algorithmic features and limits that shall be supported by all decoders conforming to that profile.
   The permitted `profile` values are strings, defined as per ITU-T Rec. H.264 Annex A
   - "ConstrainedBaseline"
   - "Baseline" (Default is not specified) 
@@ -71,7 +71,7 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "CAVLCIntra-444"
   
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#level)  
-  The Flow resource MUST indicate the H.264 level, which defines a lower bound on the required throughput for a decoder in the image (or decoded) domain.
+  The Flow resource MUST indicate the H.264 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.264 bitstream.
   The permitted `level` values are strings, defined as per ITU-T Rec. H.264 Annex A
   - "1" (Default is not specified) 
   - "1b", "1.1", "1.2", "1.3"
@@ -132,11 +132,21 @@ The `constraint_sets` parameter within the `caps` object can be used to describe
 The following parameter constraints can be used to express limits or preferences specifically defined by Rec. ITU-T H.264 and RFC 6184 for H.264 decoders:
 
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#profile)
+  - Some H.264 profiles are superset of other profiles. From the point of view of Receiver Capabilities such superset profile is assumed to also correspond to the associated subset profiles such that Receiver Capabilities does not have to include the subset profiles. The H.264 specification describe the relationship among the profiles.
+
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#level)
-- [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#packet-transmission-mode)  
+  - Some H.264 levels are superset of other levels. From the point of view of Receiver Capabilities such superset level is assumed to also correspond to the associated subset levels such that Receiver Capabilities does not have to include the subset level. The H.264 specification describe the relationship among the levels.
+
+- [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#packet-transmission-mode)
+
 - [Redundant Picture](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#redundant-picture)
+  - A Receiver declare the redundant-picture capability to indicate to the Sender that it is capable of decoding and using redundant pictures. With or without this capability a Receiver is required to decode redundant picture fro teh bitstream even it they are not used by the decoder. This capability is mainly an bandwidth  optimisation to indicate to the Sender that redundant picture shall not be sent as the decoder is not capable of using them.
+
 - [MultiFlow Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#multiflow-parameter-sets)
 - [In-Band Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#in-band-parameter-sets)
+
+- [ ] TODO: describe that a Sender always has the ability to switch active parameter sets independently of this capability (unless constrained by IS-11). A Receiver not supporting the multiflow capability would fail a PATCH if more than one parameter sets is provided in the SDP transport file.
+
 - [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) 
 
 - [ ] TODO: sar-understood should be assumed to match sar-supported
