@@ -123,7 +123,7 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "5", "5.1", "5.2"
   - "6", "6.1", "6.2" 
 
-- [ ] For H.265 the levels are as follow and map to `level-id`
+- [ ] For H.265 the levels are as follow and map to `level-id` and `tier-flag`
   - "1" 
   - "2", "2.1" 
   - "3" 
