@@ -184,7 +184,7 @@ Other existing parameter constraints, such as the following, are also appropriat
 
 An example Receiver resource is provided in the [Examples](../examples/).
 
-A Receiver MUST be able to decode a bitstream conforming to the profiles and levels declared in the Receiver Capabilities or the implies default value of such capabilities. A Receiver may have preferences and more optimal profiles and levels that may be declared through Receiver Capabilities. A preferred constraint set MAY indicate such preferences while another constraint set MAY indicate full support of some profiles and levels. A Receiver MAY further constraint the support of an H.264 bitstream compliant with a profile and level using other constraints in its Receiver Capabilities.
+A Receiver MUST be able to decode a bitstream conforming to the profiles and levels declared in the Receiver Capabilities or the implied default value of such capabilities. A Receiver may have preferences and more optimal profiles and levels that may be declared through Receiver Capabilities. A preferred constraint set MAY indicate such preferences while another constraint set MAY indicate full support of some profiles and levels. A Receiver MAY further constraint the support of an H.264 bitstream compliant with a profile and level using other constraints in its Receiver Capabilities.
 
 ## H.264 IS-05 Senders and Receivers
 
