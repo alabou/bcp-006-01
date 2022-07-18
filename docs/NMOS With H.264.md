@@ -254,7 +254,11 @@ An example SDP file is provided in the [Examples](../examples/).
 
 #### Parameter Sets
 
-The `sprop-parameter-sets` parameter of an SDP transport file MAY contain a collection of out-of-band parameter sets. An H.264 stream's current active parameter sets referencing a parameter sets from this collection is said to be using an out-of-band parameter sets. Otherwise it is said to be using an in-band parameter sets or it is an invalid stream if the current active parameter sets is not defined.
+The `sprop-parameter-sets` parameter of an SDP transport file MAY contain a collection of out-of-band parameter sets. An H.264 stream's current active parameter sets referencing a parameter sets from this collection is said to be using an out-of-band parameter sets. 
+
+An H.264 stream may transport a collection of in-band parameter sets. An H.264 stream's current active parameter sets referencing a parameter sets from !@#$!@##$!@##$!@#$
+
+Otherwise it is said to be using an in-band parameter sets or it is an invalid stream if the current active parameter sets is not defined.
 
 The current active parameter sets of an H.264 stream MUST comply with the Flow associated with the Sender and the related parameters of the `fmtp=` attribute of the SDP transport file.
 
