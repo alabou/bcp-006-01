@@ -74,8 +74,46 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "HighIntra-444"
   - "CAVLCIntra-444"
   
+- [ ] For H.265 the profiles are as follow and map to `profile-id`. The profile-space parameter of the SDP transprot file SHALL be omited or alwyas be 0.
+  - Main (Default if not specified in the SDP transport file) 
+  - Main10 
+  - Main10Still 
+  - MainStill 
+  - Monochrome, 
+  - Monochrome10 
+  - Monochrome12 
+  - Monochrome16  
+  - Main12 
+  - Main10-422 
+  - Main12-422 
+  - Main444 
+  - Main10-444 
+  - Main12-444 
+  - MainIntra 
+  - Main10Intra 
+  - Main12Intra 
+  - Main10Intra-422 
+  - Main12Intra-422 
+  - MainIntra-444 
+  - Main10Intra-444 
+  - Main12Intra-444 
+  - Main16Intra-444 
+  - MainStill-444 
+  - Main16Still-444 
+  - HighThroughput-444 
+  - HighThroughput10-444 
+  - HighThroughput14-444 
+  - HighThroughput16Intra-444 
+  - ScreenExtendedMain 
+  - ScreenExtendedMain10 
+  - ScreenExtendedMain-444 
+  - ScreenExtendedMain10-444 
+  - ScreenExtendedHighThroughput-444 
+  - ScreenExtendedHighThroughput10-444 
+  - ScreenExtendedHighThroughput14-444 
+  
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#level)  
-  The Flow resource MUST indicate the H.264 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.264 bitstream. The Flow's `level` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional accroding to RCS 6184 and REQUIRED by this specificatio nunless the `profile-level-id` parameter corresponds to the default value in which case it MAY be omited.
+  The Flow resource MUST indicate the H.264 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.264 bitstream. The Flow's `level` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional accroding to RCS 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value in which case it MAY be omited.
   The permitted `level` values are strings, defined as per ITU-T Rec. H.264 Annex A
   - "1" (Default if not specified in the SDP transport file) 
   - "1b", "1.1", "1.2", "1.3"
@@ -84,6 +122,21 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "4", "4.1", "4.2"
   - "5", "5.1", "5.2"
   - "6", "6.1", "6.2" 
+
+- [ ] For H.265 the levels are as follow and map to `level-id`
+  - "1" 
+  - "2", "2.1" 
+  - "3" 
+  - "3.1" (Default if not specified in the SDP transport file) 
+  - "4", "4.1" 
+  - "5", "5.1", "5.2" 
+  - "6", "6.1", "6.2" 
+  - "High-1" 
+  - "High-2", "High-2.1" 
+  - "High-3", "High-3.1" 
+  - "High-4", "High-4.1" 
+  - "High-5", "High-5.1", "High-5.2" 
+  - "High-6", "High-6.1", "High-6.2" 
 
 - [Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#bit-rate)  
   The Flow resource MUST indicate the target encoding bit rate (kilobits/second) of the H.264 bitstream. This attribute has no equivalent in the SDP transport file.
@@ -102,6 +155,9 @@ The Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subcl
 Sender resources provide no indication of media type or format, since this is described by the associated Flow resource.
 
 The SDP file at the `manifest_href` MUST comply with the requirements of RFC 6184 in the [Declarative Session Description](https://datatracker.ietf.org/doc/html/rfc6184#section-8.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 6184 is not supported. The "fmtp" source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported. 
+
+- [ ] For H.265 indicate also that "The tx-mode parmeter of the SDP transport file SHALL not be omited or always set to SRST (Single RTP Stream Transport). 
+
 If the Sender meets the traffic shaping and delivery timing requirements specified for ST 2110-22, the SDP file MUST also comply with the provisions of ST 2110-22.
 
 For Nodes implementing IS-04 v1.3 or higher, the following additional requirements on the Sender resource apply.
@@ -118,7 +174,9 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
   If the Sender is using the non-interleaved or interleaved packetization modes, it MUST include the `packet_transmission_mode` attribute and set it to either `non_interleaved_nal_units` or `interleaved_nal_units`. The packet_transmission_mode attribute map the the RFC 6184 packetization-mode parameter with `single_nal_unit` corresponding to value 0, `non_interleaved_nal_units` to value 1 and `interleaved_nal_units` to value 2.
   Since the default value of this attribute is `single_nal_unit`, the Sender MAY omit this attribute when using that mode. When the `packet-transmission-mode` attribute is included, the associated `packetization-mode` parameter of the SDP transport file MUST also be included.
   Parameters related to the `interleaved_nal_units` mode SHOULD be included in the SDP transport file unless their default value is used.
-  
+
+- [ ] For H.265 the `packet_transmission_mode` attribute can either be `non_interleaved_nal_units` or `interleaved_nal_units`. The `packet_transmission_mode` maps to sprop-max-don-diff of hte SDP transport file being 0 for `non_interleaved_nal_units` or greater than 0 for `interleaved_nal_units`.
+
 - [ST 2110-21 Sender Type](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#st-2110-21-sender-type)  
   If the Sender complies with the traffic shaping and delivery timing requirements for ST 2110-22, it MUST include the `st2110_21_sender_type` attribute.
 
