@@ -272,7 +272,7 @@ A Receiver declaring the `multiflow_parameter_sets` capability SHOULD verify tha
 
 #### In-band transporting of parameter sets through the media bitstream
 
-The `in_band_parameter_sets` Receiver Capabilities indicate that a Receiver supports getting additional parameter sets in-band. A Receiver SHALL declare the `multiflow_parameter_sets` capability along with the `in_band_parameter_sets` capability. A Sender MUST provide an initial active parameter sets in the SDP transport file `sprop-parameter-sets` attribute.
+The `in_band_parameter_sets` Receiver Capabilities indicate that a Receiver supports getting additional or updated parameter sets in-band. A Receiver SHALL declare the `multiflow_parameter_sets` capability along with the `in_band_parameter_sets` capability. A Sender MUST provide an initial active parameter sets in the SDP transport file `sprop-parameter-sets` attribute.
 
 As per RFC 6184 the out-of-band and in-band parameter sets MUST comply with the profile and level declared in the SDP transport file and the associated Flow.
 
