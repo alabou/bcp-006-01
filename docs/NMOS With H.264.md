@@ -49,13 +49,17 @@ In addition to those attributes defined in IS-04 for all coded video Flows, the 
 These attributes provide information for Controllers and Users to evaluate stream compatibility between Senders and Receivers.
 
 - [Components](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#components)  
-  The Flow resource MUST indicate the color (sub-)sampling using the `components` attribute.
-  The `components` array value corresponds to the `sampling`, `width` and `height` values in the SDP format-specific parameters defined by RFC 9134.
+  The Flow resource MUST indicate the color (sub-)sampling, widty, height and depth using the `components` attribute.
+  The `components` array value corresponds to the `sampling`, `width`, `height` and `depth` values of the SDP parameters defined by ST-2110-20 for the associated non-compressed stream. The `sampling`, `width`, `height` and `depth` parameters MUST be provided in the Flow's associated SDP transport file.
+  
+- [ ] ST-2110-22 does not require sampling or depth. RFC 6184 does not define them nor the width and height. This choice here is to refer to the assocaited non-compressed Flow's SDP transport file parameters to provide the specification of those values.
+- [ ] All the information encoded in the component attribute mUST also be provided in the SDP transport file. What a Controller observe, a Receiver shall also observe.
+  
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#profile)  
-  The Flow resource MUST indicate the H.264 profile, which defines algorithmic features and limits that shall be supported by all decoders conforming to that profile.
+  The Flow resource MUST indicate the H.264 profile, which defines algorithmic features and limits that shall be supported by all decoders conforming to that profile. The Flow's `profile` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional according to RCS 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value in which case it MAY be omited.
   The permitted `profile` values are strings, defined as per ITU-T Rec. H.264 Annex A
   - "ConstrainedBaseline"
-  - "Baseline" (Default is not specified) 
+  - "Baseline" (Default if not specified in the SDP transport file) 
   - "Main"
   - "Etended"
   - "High"
@@ -67,13 +71,13 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "HighPredictive-444"
   - "High10Intra"
   - "HighIntra-422"
-  - "HighIntra-422"
+  - "HighIntra-444"
   - "CAVLCIntra-444"
   
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#level)  
-  The Flow resource MUST indicate the H.264 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.264 bitstream.
+  The Flow resource MUST indicate the H.264 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.264 bitstream. The Flow's `level` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional accroding to RCS 6184 and REQUIRED by this specificatio nunless the `profile-level-id` parameter corresponds to the default value in which case it MAY be omited.
   The permitted `level` values are strings, defined as per ITU-T Rec. H.264 Annex A
-  - "1" (Default is not specified) 
+  - "1" (Default if not specified in the SDP transport file) 
   - "1b", "1.1", "1.2", "1.3"
   - "2", "2.1", "2.2"
   - "3", "3.1", "3.2"
@@ -82,7 +86,7 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "6", "6.1", "6.2" 
 
 - [Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#bit-rate)  
-  The Flow resource MUST indicate the target bit rate (kilobits/second) of the bitstream.
+  The Flow resource MUST indicate the target encoding bit rate (kilobits/second) of the H.264 bitstream. This attribute has no equivalent in the SDP transport file.
   The `bit_rate` integer value is expressed in units of 1000 bits per second, rounding up.
   
 - [ ] TODO: Indicate that the bit-rate SHALL comply with assocaited declaration within the bitstream, if any (ex. hrd_parameters of the bitstream).
@@ -105,13 +109,15 @@ For Nodes implementing IS-04 v1.3 or higher, the following additional requiremen
 In addition to those attributes defined in IS-04 for Senders, the following attributes defined in the [Sender Attributes register](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/) of the NMOS Parameter Registers are used for H.264.
 
 - [Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#bit-rate)  
-  The Sender resource MUST indicate the bit rate (kilobits/second) including the RTP transport overhead.
+  The Sender resource MUST indicate the bit rate (kilobits/second) including the RTP transport overhead of hte H.264 stream.
   The `bit_rate` integer value is expressed in units of 1000 bits per second, rounding up.
   The value is for the IP packets, so for the RTP payload format per RFC 6184, that includes the RTP, UDP and IP packet headers and the payload.  
   Informative note: This definition is consistent with the definition of the bit rate attribute required by ST 2110-22 in the SDP media description.
+  
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#packet-transmission-mode)  
-  If the Sender is using the single or interleaved packetization mode, it MUST include the `packet_transmission_mode` attribute and set it to either `single_nal_unit` or `interleaved_nal_units`. The packet_transmission_mode attribute map the the RFC 6184 packetization-mode with `single_nal_unit` corresponding to value 0, `non_interleaved_nal_units` to value 1 and `interleaved_nal_units` to value 2.
-  Since the default value of this attribute is `non_interleaved_nal_units`, the Sender MAY omit this attribute when using non-interleaved packetization.
+  If the Sender is using the non-interleaved or interleaved packetization modes, it MUST include the `packet_transmission_mode` attribute and set it to either `non_interleaved_nal_units` or `interleaved_nal_units`. The packet_transmission_mode attribute map the the RFC 6184 packetization-mode parameter with `single_nal_unit` corresponding to value 0, `non_interleaved_nal_units` to value 1 and `interleaved_nal_units` to value 2.
+  Since the default value of this attribute is `single_nal_unit`, the Sender MAY omit this attribute when using that mode. When the `packet-transmission-mode` attribute is included, the associated `packetization-mode` parameter of the SDP transport file MUST also be included.
+  
 - [ST 2110-21 Sender Type](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#st-2110-21-sender-type)  
   If the Sender complies with the traffic shaping and delivery timing requirements for ST 2110-22, it MUST include the `st2110_21_sender_type` attribute.
 
@@ -132,26 +138,34 @@ The `constraint_sets` parameter within the `caps` object can be used to describe
 The following parameter constraints can be used to express limits or preferences specifically defined by Rec. ITU-T H.264 and RFC 6184 for H.264 decoders:
 
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#profile)
-  - Some H.264 profiles are superset of other profiles. From the point of view of Receiver Capabilities such superset profile is assumed to also correspond to the associated subset profiles such that Receiver Capabilities does not have to include the subset profiles. The H.264 specification describe the relationship among the profiles.
+  - Some H.264 profiles are superset of other profiles. From the point of view of Receiver Capabilities such superset profile is assumed to also correspond to the associated subset profiles such that Receiver Capabilities does not have to include the subset profiles. The H.264 specification describe the relationship among the profiles. If a Receiver does not indicate a `profile` constraint it is assumed as supporting the "Baseline" profile.
 
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#level)
-  - Some H.264 levels are superset of other levels. From the point of view of Receiver Capabilities such superset level is assumed to also correspond to the associated subset levels such that Receiver Capabilities does not have to include the subset level. The H.264 specification describe the relationship among the levels.
+  - Some H.264 levels are superset of other levels. From the point of view of Receiver Capabilities such superset level is assumed to also correspond to the associated subset levels such that Receiver Capabilities does not have to include the subset level. The H.264 specification describe the relationship among the levels.  If a Receiver does not indicate a `level` constraint it is assumed as supporting level "1".
 
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#packet-transmission-mode)
+  - Only one mode MUST be specified.  If a Receiver does not indicate a `packet_transmissin_mode` constraint it is assumed as supporting "single_nal_unit" mode.
 
 - [Redundant Picture](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#redundant-picture)
-  - A Receiver declare the redundant-picture capability to indicate to the Sender that it is capable of decoding and using redundant pictures. With or without this capability a Receiver is required to decode redundant picture fro teh bitstream even it they are not used by the decoder. This capability is mainly an bandwidth  optimisation to indicate to the Sender that redundant picture shall not be sent as the decoder is not capable of using them.
+  - A Receiver declares the redundant-picture capability to indicate to the Sender that it is capable of decoding and using redundant pictures. With or without this capability a Receiver MUST be capable of decoding redundant pictures from the bitstream even it they are not used by the decoder. This capability allows bandwidth  optimisations, indicating to the Sender that redundant picture shall not be sent as the decoder is not capable of using them. This capability MUST comply with the `profile` constraint of the Receiver, a Receiver supporting profiles not allowing redundant pictures, SHALL not set this cconstraint.
 
 - [MultiFlow Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#multiflow-parameter-sets)
+
+  - A Receiver declares the multi-flow capability to indicate the it supports H.264 streams using various parameter sets. As each parameter sets is associated to a specific Flow, this capability indicate that a Receiver is capable of decoding seamlessly H.264 streams where the associated Flow changes dynamically. All the parameter sets comply with the `profile-level-id` parameter of the stream associated SDP transport file. The parameter sets are specified out-of-band using the `sprop-parameter-sets` attribute of an SDP transport file if the following in-band capability is not declared and both out-of-band and in-band otherwise.
+
+- [ ] TODO: describe that a Sender always has the ability to switch active parameter sets independently of this capability (unless constrained by IS-11). A Receiver not supporting the multi-flow capability would fail a PATCH if more than one parameter sets is provided in the SDP transport file.
+
 - [In-Band Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#in-band-parameter-sets)
 
-- [ ] TODO: describe that a Sender always has the ability to switch active parameter sets independently of this capability (unless constrained by IS-11). A Receiver not supporting the multiflow capability would fail a PATCH if more than one parameter sets is provided in the SDP transport file.
+  - A Receiver declares the in-band capability to indicate the it supports H.264 streams producing in-band parameter sets that update or augment the initial out-of-band parameter sets. A receiver SHALL not indicate the in-band capability unless it also indicate the multi-flow capability. A receiver SHALL be capable of decoding in-band parameter sets and behave according to its capabilities if those are not duplicate of the original out-of-band parameter sets.
+
+- [ ] TODO: describe that a Sender always has the ability to switch active parameter sets independently of this capability (unless constrained by IS-11). A Receiver not supporting the in-band capability would become inactive if in-band parameter sets do not match the out-of-band ones.
 
 - [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) 
 
 - [ ] TODO: sar-understood should be assumed to match sar-supported
 
-When the H.264 decoder has not restriction of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels need not be enumerated.
+When the H.264 decoder has no restrictions of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels need not be enumerated.
 
 Other existing parameter constraints, such as the following, are also appropriate to express limitations on supported H.264 video streams:
 
