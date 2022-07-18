@@ -127,6 +127,10 @@ An example Sender resource is provided in the [Examples](../examples/).
 
 A Sender MUST produces an H.264 bitstream that is compliant with the profile and level declared in the stream's associated SDP transport file.
 
+A Sender MUST provide initial active parameter sets in the `sprop-parameter-sets` parameter of the stream's associated SDP transport file, compliant with the declared profile and level. The initial active parameter sets SHALL comply with the Flow associated with the Sender on activation and the related parameters of the `fmtp=` attribute of the SDP transport file. A Sender MAY provide many out-of-band parameter sets (active and inactive) in `sprop-parameter-sets` parameter.
+
+- [ ] A Receiver SHALL know as much as a Controller about a stream. As there is a mandatiry Flow associated with a Sender that SHALL be an initial active parameter sets delcared in the SDP transport file for the Receiver.
+
 ## H.264 IS-04 Receivers
 
 Nodes capable of receiving H.264 video streams MUST have a Receiver resource in the IS-04 Node API, which lists `video/h264` in the `media_types` array within the `caps` object.
@@ -180,7 +184,7 @@ Other existing parameter constraints, such as the following, are also appropriat
 
 An example Receiver resource is provided in the [Examples](../examples/).
 
-A Receiver MUST be able to decode a bitstream conforming to the profiles and levels declared in the Receiver Capabilities. A Receiver may have preferences and more optimal profiles and levels that may be declared through Receiver Capabilities. A preferred constraint set MAY indicate such preferences and another constraint set MAY indicate full support of some profiles and levels. A Receiver MAY further constraint the support of an H.264 bitstream compliant with a profile and level using other constraints in its Receiver Capabilities.
+A Receiver MUST be able to decode a bitstream conforming to the profiles and levels declared in the Receiver Capabilities or the implies default value of such capabilities. A Receiver may have preferences and more optimal profiles and levels that may be declared through Receiver Capabilities. A preferred constraint set MAY indicate such preferences while another constraint set MAY indicate full support of some profiles and levels. A Receiver MAY further constraint the support of an H.264 bitstream compliant with a profile and level using other constraints in its Receiver Capabilities.
 
 ## H.264 IS-05 Senders and Receivers
 
@@ -193,7 +197,7 @@ An example SDP file is provided in the [Examples](../examples/).
 
 #### Out-of-band transporting of parameter sets through the SDP transport file
 
-The initial active the parameter sets (SPS, PPS) of the `sprop-parameter-sets` attribute of an SDP transport file SHALL comply with the Flow associated with the Sender on activation and the related parameters of the `fmtp=` attribute of the SDP transport file (Ex. ST2110-22 requires the parameters width, height, exactframerate, TP, mediaclk, ts-refclk and b= to be declared in the SDP transport file). A Sender MAY provide many out-of-band parameter sets in the SDP transport file.
+The initial active the parameter sets of the `sprop-parameter-sets` parameter of an SDP transport file SHALL comply with the Flow associated with the Sender on activation and the related parameters of the `fmtp=` attribute of the SDP transport file. A Sender MAY provide many out-of-band parameter sets in the SDP transport file.
 
 As per RFC 6184 the out-of-band parameter sets MUST comply with the profile and level declared in the SDP transport file and the associated Flow.
 
@@ -201,11 +205,11 @@ The parameters of the `fmtp=` attribute of the SDP transport file related to the
 
 A Sender MAY seamlessly switch among the out-of-band parameter sets dynamically, provided that the Flow associated with the Sender changes accordingly and the content of the SDP transport file does not change. If the content of the SDP transport file changes, the Sender SHALL comply with IS-04, IS-05.
 
-A Receiver infers updated SDP transport file parameters from the current active parameter sets. The SDP transport file of the Sender is not allowed to change in order to benefit from the seamless transitions between parameter sets.  If the content of the Sender's SDP transport file changes, the Receiver SHALL comply with IS-04, IS-05. 
+A Receiver infers updated SDP transport file parameters from the current active parameter sets. The SDP transport file of the Sender is not allowed to change in order to benefit from the seamless transitions between parameter sets. If the content of the Sender's SDP transport file changes, the Receiver SHALL comply with IS-04, IS-05. 
 
-A Receiver declaring the `multiflow_parameter_sets` capability SHOULD verify that all the parameter sets of the SDP transport file comply with the Receiver Capabilities, infering the parameters of the `fmtp=` attribute from the paremeter sets for each possibly active parameter sets. A Receiver not supporting the -`multiflow_parameter_sets` capability SHOULD verify that only one active parameter sets is declared in the `sprop-parameter-sets` attribute.
+A Receiver declaring the `multiflow_parameter_sets` capability SHOULD verify that all the parameter sets of the SDP transport file comply with the Receiver Capabilities, infering the parameters of the `fmtp=` attribute from the paremeter sets for each possibly active parameter sets. A Receiver not supporting the `multiflow_parameter_sets` capability SHOULD verify that only one active parameter sets is declared in the `sprop-parameter-sets` attribute.
 
-Note to IPMX: An IPMX H.264 stream will not be able to benefit from the seamless transitions of parameter sets because of the attributes measuredpixclk, htotal and vtotal that are part of the SDP transport file and that cannot be inferred from the parameter sets. 
+- [ ] Note to IPMX: An IPMX H.264 stream will not be able to benefit from the seamless transitions of parameter sets because of the attributes measuredpixclk, htotal and vtotal that are part of the SDP transport file and that cannot be inferred from the parameter sets. 
 
 #### In-band transporting of parameter sets through the media bitstream
 
