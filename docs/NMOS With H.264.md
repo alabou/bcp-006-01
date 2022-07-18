@@ -53,7 +53,7 @@ These attributes provide information for Controllers and Users to evaluate strea
   The `components` array value corresponds to the `sampling`, `width`, `height` and `depth` values of the SDP parameters defined by ST-2110-20 for the associated non-compressed stream. The `sampling`, `width`, `height` and `depth` parameters MUST be provided in the Flow's associated SDP transport file.
   
 - [ ] ST-2110-22 does not require sampling or depth. RFC 6184 does not define them nor the width and height. This choice here is to refer to the assocaited non-compressed Flow's SDP transport file parameters to provide the specification of those values.
-- [ ] All the information encoded in the component attribute mUST also be provided in the SDP transport file. What a Controller observe, a Receiver shall also observe.
+- [ ] All the information encoded in the component attribute MUST also be provided in the SDP transport file. What a Controller observe, a Receiver shall also observe.
   
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#profile)  
   The Flow resource MUST indicate the H.264 profile, which defines algorithmic features and limits that shall be supported by all decoders conforming to that profile. The Flow's `profile` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional according to RCS 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value in which case it MAY be omited.
