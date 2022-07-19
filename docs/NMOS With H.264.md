@@ -254,22 +254,19 @@ An example SDP file is provided in the [Examples](../examples/).
 
 #### Parameter Sets
 
-The `sprop-parameter-sets` parameter of an SDP transport file MAY contain a collection of out-of-band parameter sets. An H.264 stream's current active parameter sets referencing a parameter sets from this collection is said to be using an out-of-band parameter sets. 
+The stream's active parameter set is made of the active sequence and picture parameter sets. The parameter sets of an H.264 stream are are transmitted by a Sender either out-of-band through an SDP transport file or in-band through the coded stream. The active parameter set of an H.264 coded stream MUST reference valid out-of-band or in-band parameter sets. The stream is invalid otherwise.
 
-An H.264 stream may transport a collection of in-band parameter sets. An H.264 stream's current active parameter sets referencing a parameter sets from !@#$!@##$!@##$!@#$
+The `sprop-parameter-sets` parameter of an SDP transport file MAY contain a collection of out-of-band parameter sets. Those parameter sets provide an initial parameter sets for the H.264 stream before decoding starts.
 
-Otherwise it is said to be using an in-band parameter sets or it is an invalid stream if the current active parameter sets is not defined.
+An H.264 stream may transport in-band parameter sets to update parameter sets received out-of-band or to define addtional parameter sets. The `in_band_parameter_sets` Receiver Capability indicates that a Receiver supports getting additional or updated parameter sets in-band.
 
-The current active parameter sets of an H.264 stream MUST comply with the Flow associated with the Sender and the related parameters of the `fmtp=` attribute of the SDP transport file.
+The current active parameter set of an H.264 stream MUST comply with the current Flow associated with a Sender and the related parameters of the `fmtp=` attribute of the SDP transport file.
 
 The current active parameter sets of an H.164 stream MUST comply with the `profile-level-id` declared in the SDP transport file and the `profile` and `level` of the associated Flow.
 
-The `in_band_parameter_sets` Receiver Capability indicates that a Receiver supports getting additional or updated parameter sets in-band in addition to the out-of-band ones received from the SDP transport file.
+A Receiver SHOULD verify that the current active parameter set comply with the Receiver's Capabilities. If a Receiver only support out-of-band parameter sets it MUST perform the verification when a Controller PATCH the **/staged** endpoint for activation. In this situation, all the out-of-band parameter sets MUST be compliant with the Receiver Capabilities. Otherwise if a Receiver supports both out-of-band and in-band parameter sets it MUST perform the verification of the out-of-band parameter sets when a Controller PATCH the **/staged** endpoint for activation and it MUST perform the verification of the in-band parameter sets just-in-time as it decodes the stream. In this situation, all the out-of-band and in-band parameter sets MUST be compliant withthe Receiver Capabilities.
 
-The `multiflow_parameter_sets` Receiver Capability indicates that a Receiver supports decoding an H.264 stream where the current active parameter sets changes dynamically.
-
-A Receiver SHOULD verify that the current active parameter sets comply with the Receiver's Capabilities, infering the parameters of the `fmtp=` attribute of the SDP transport file from the curent active parameter sets. If a Receiver only support out-of-band parameter sets it MUST perform the verification when a Controller PATCH the **/staged** endpoint for activation. In this situation, all the out-of-band parameter sets MUST be compliant with the Receiver Capabilities. Otherwise if a Receiver supports both out-of-band and in-band parameter sets it MUST perform the verification of the out-of-band parameter sets when a Controller PATCH the **/staged** endpoint for activation and it MUST verify the in-band parameter sets just-in-time as it decodes the stream. In this situation, all the out-of-band and in-band parameter sets MUST be compliant withthe Receiver Capabilities.
-
+The `multiflow_parameter_sets` Receiver Capability indicates that a Receiver supports decoding an H.264 stream where the current active parameter set changes dynamically. A Receiver without this capability requires that at most one active parameter set is used by the coded stream. Such active parameter set MAY be obtained either out-of-band or in-band if the Receiver support the `in_band_parameter_sets` capability. When obtained in-band the `sprop-parameter-sets` parameter of an SDP transport file MUST be empty or omited. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MUST contain only the active parameter set.
 
 The active the parameter sets of the `sprop-parameter-sets` parameter of an SDP transport file SHALL comply with the Flow associated with the Sender and the related parameters of the `fmtp=` attribute of the SDP transport file. A Sender MAY provide many out-of-band parameter sets in the SDP transport file or none. The `multiflow_parameter_sets` capability of a Receiver indicate if it supports the use of multiple active parameter sets. If the Sender provides multiple out-of-band parameter sets and the Receiver `multiflow_parameter_sets` capability is not set, it SHALL consider
 
