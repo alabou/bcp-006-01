@@ -17,7 +17,7 @@ AMWA IS-04 and IS-05 already have support for RTP transport and can signal the m
 - [ ] TODO: Current ST-2110 suite of protocols only support constant bit-rate streams. An new protocol for variable bit-rate is required. How should we refer to this upcoming variable bit-rate specification?
 - [ ] TODO: Should we reference the VSF's IPMX protocol here or limit to actual ST-2110 protocols which IPMX uses.
 - [ ] TODO: References are made to the ITU-T H.264 specification instead of the ISO because it is more accessible (free).
-- [ ] TODO: This specification shall be written without assuming ST-2110 transport ... It shall only be based on RFX 6184 and add is ST-2110 is used then ...
+- [ ] TODO: This specification shall be written without assuming ST-2110 transport ... It shall only be based on RFC 6184 and add "if ST-2110 is used then" ...
 
 ## Use of Normative Language
 
