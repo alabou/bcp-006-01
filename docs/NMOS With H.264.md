@@ -210,7 +210,7 @@ The following parameter constraints can be used to express limits or preferences
   - Some H.264 levels are superset of other levels. From the point of view of Receiver Capabilities such superset level is assumed to also correspond to the associated subset levels such that Receiver Capabilities does not have to include the subset level. The H.264 specification describe the relationship among the levels.  If a Receiver does not indicate a `level` constraint it is assumed as supporting level "1".
 
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#packet-transmission-mode)
-  - Only one mode MUST be specified.  If a Receiver does not indicate a `packet_transmissin_mode` constraint it is assumed as supporting "single_nal_unit" mode.
+  - Only one mode MUST be specified.  If a Receiver does not indicate a `packet_transmission_mode` constraint it is assumed as supporting "single_nal_unit" mode.
 
 - [MultiFlow Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#multiflow-parameter-sets)
 
