@@ -57,10 +57,12 @@ These attributes provide information for Controllers and Users to evaluate strea
   
   If a stream complies with other specifications in addition to RFC 6184 about the parameters declared in the "fmtp=" attribute of an SDP transport file, those parameters MUST comply with the stream's active parameter sets.
   
-- [ ] All the information encoded in the `components` attribute MUST also be provided in the SDP transport file. What a Controller observe, a Receiver shall also observe it. There is an exception with in-band parameter sets where the information is provided in-band for the Receiver, not in the SDP transport file.
+  Informative note: It implies that having SDP parameters describing aspects of the stream's active paramter set produces change of the SDP transport file content when the stream's active parameter set values change.
+  
+- [ ] Tthe information encoded in the `components` attribute MUST also be provided in the SDP transport file. What a Controller observe, a Receiver shall also observe it. There is an exception with in-band parameter sets where the information is provided in-band for the Receiver, not in the SDP transport file.
   
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#profile)  
-  The Flow resource MUST indicate the H.264 profile, which defines algorithmic features and limits that shall be supported by all decoders conforming to that profile. The Flow's `profile` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional according to RCS 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value in which case it MAY be omited.
+  The Flow resource MUST indicate the H.264 profile, which defines algorithmic features and limits that shall be supported by all decoders conforming to that profile. The Flow's `profile` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional according to RFC 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value, in which case it MAY be omited.
   The permitted `profile` values are strings, defined as per ITU-T Rec. H.264 Annex A
   - "ConstrainedBaseline"
   - "Baseline" (Default if not specified in the SDP transport file) 
@@ -117,7 +119,7 @@ These attributes provide information for Controllers and Users to evaluate strea
   - ScreenExtendedHighThroughput14-444 
   
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#level)  
-  The Flow resource MUST indicate the H.264 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.264 bitstream. The Flow's `level` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional accroding to RCS 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value in which case it MAY be omited.
+  The Flow resource MUST indicate the H.264 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.264 bitstream. The Flow's `level` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional according to RFC 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value, in which case it MAY be omited.
   The permitted `level` values are strings, defined as per ITU-T Rec. H.264 Annex A
   - "1" (Default if not specified in the SDP transport file) 
   - "1b", "1.1", "1.2", "1.3"
@@ -143,11 +145,11 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "High-6", "High-6.1", "High-6.2" 
 
 - [Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#bit-rate)  
-  The Flow resource MUST indicate the target encoding bit rate (kilobits/second) of the H.264 bitstream. This attribute has no equivalent in the SDP transport file.
+  The Flow resource MUST indicate the target encoding bit rate (kilobits/second) of the H.264 bitstream. It SHALL comply with the stream's active parameter set associated parameters.
   The `bit_rate` integer value is expressed in units of 1000 bits per second, rounding up.
   
-- [ ] TODO: Indicate that the bit-rate SHALL comply with assocaited declaration within the bitstream, if any (ex. hrd_parameters of the bitstream).
-
+  Informative note: The H.264 coded stream is not required to transport HRD parameters such that an H.264 decoder may not know the actual target bitrate of a stream. There are bit-rate limits imposed by the level of the coded bitstream. IS-11 may be used to constraint the Sender to a target bit-rate compatible with the Receiver Capabilities.
+  
 An example Flow resource is provided in the [Examples](../examples/).
 
 ### Senders
@@ -169,10 +171,13 @@ For Nodes implementing IS-04 v1.3 or higher, the following additional requiremen
 In addition to those attributes defined in IS-04 for Senders, the following attributes defined in the [Sender Attributes register](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/) of the NMOS Parameter Registers are used for H.264.
 
 - [Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#bit-rate)  
-  The Sender resource MUST indicate the bit rate (kilobits/second) including the RTP transport overhead of hte H.264 stream.
+  The Sender resource SHOULD indicate the target bit rate (kilobits/second) including the transport overhead of the H.264 stream. If the Sender meets the traffic shaping and delivery timing requirements specified for ST 2110-22 it MUST indicate the transport bit-rate.
   The `bit_rate` integer value is expressed in units of 1000 bits per second, rounding up.
   The value is for the IP packets, so for the RTP payload format per RFC 6184, that includes the RTP, UDP and IP packet headers and the payload.  
-  Informative note: This definition is consistent with the definition of the bit rate attribute required by ST 2110-22 in the SDP media description.
+  
+  Informative note: This definition is consistent with the definition of the bit rate attribute required by ST 2110-22 in the SDP media description. There is no such SDP attribute in RFC 6184.
+  
+- [ ] MUST changed for SHOULD as RFC 6184 does not have a "b=" SDP attribute and future ST 2110-?? for VBR will likely not have a requried "b=" attribute. Transport of H.264 / H.265 streams should probably not be using ST 2110-22 in order to remove the requirement to bhave the "b=" attribute. For H.264 and H/265 coded streams there are elements of the bitstream describing the encoding bitrate properties. A receiver should from its knowledge of the transport derive an estimate of the transport bit-rate.
   
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#packet-transmission-mode)  
   If the Sender is using the non-interleaved or interleaved packetization modes, it MUST include the `packet_transmission_mode` attribute and set it to either `non_interleaved_nal_units` or `interleaved_nal_units`. The packet_transmission_mode attribute map the the RFC 6184 packetization-mode parameter with `single_nal_unit` corresponding to value 0, `non_interleaved_nal_units` to value 1 and `interleaved_nal_units` to value 2.
@@ -184,15 +189,9 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
 - [ST 2110-21 Sender Type](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#st-2110-21-sender-type)  
   If the Sender complies with the traffic shaping and delivery timing requirements for ST 2110-22, it MUST include the `st2110_21_sender_type` attribute.
 
-- [ ] TODO: Indicate that the bit-rate SHALL comply with assocaited declaration within the bitstream, if any (ex. hrd_parameters of the bitstream).
-
 An example Sender resource is provided in the [Examples](../examples/).
 
-A Sender MUST produces an H.264 bitstream that is compliant with the profile and level declared in the stream's associated SDP transport file.
-
-A Sender MUST provide initial active parameter sets in the `sprop-parameter-sets` parameter of the stream's associated SDP transport file, compliant with the declared profile and level. The initial active parameter sets SHALL comply with the Flow associated with the Sender on activation and the related parameters of the `fmtp=` attribute of the SDP transport file. A Sender MAY provide many out-of-band parameter sets (active and inactive) in `sprop-parameter-sets` parameter.
-
-- [ ] A Receiver SHALL know as much as a Controller about a stream. As there is a mandatiry Flow associated with a Sender that SHALL be an initial active parameter sets delcared in the SDP transport file for the Receiver.
+The H.264 encoder of a Sender MUST produces an H.264 bitstream that is compliant with the `profile-level-id` declared in the stream's associated SDP transport file.
 
 ## H.264 IS-04 Receivers
 
