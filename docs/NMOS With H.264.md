@@ -193,6 +193,8 @@ An example Sender resource is provided in the [Examples](../examples/).
 
 The H.264 encoder of a Sender MUST produces an H.264 bitstream that is compliant with the `profile-level-id` declared in the stream's associated SDP transport file.
 
+- [ ] Should we have Sender Capabilities matching the Receiver Capabilities to indicate to a Controller what the Sender can do or is doing. The Sender can only be constrained by IS-11 but a Controller could at least know if a Sender is actually compatible with a Receiver.
+
 ## H.264 IS-04 Receivers
 
 Nodes capable of receiving H.264 video streams MUST have a Receiver resource in the IS-04 Node API, which lists `video/h264` in the `media_types` array within the `caps` object.
