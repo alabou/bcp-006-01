@@ -51,10 +51,13 @@ These attributes provide information for Controllers and Users to evaluate strea
 
 - [Components](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#components)  
   The Flow resource MUST indicate the color (sub-)sampling, width, height and depth of the associated uncompressed picture using the `components` attribute.
-  The `components` array values MUST correspond to the stream's current active parameter sets values. A Flow MUST track the stream's current active parameter sets.
+  The `components` array values MUST correspond to the stream's current active parameter set values. A Flow MUST track the stream's current active parameter set.
   
-- [ ] ST 2110-22 does not require sampling or depth. RFC 6184 does not define any such parameters.The information MUST be derived from the H.264 active parameter sets by the Receiver. If teh streams complies with ST 2110-22, the width and height MUST comply with the stream's active parameter sets.
-- [ ] All the information encoded in the `components` attribute MUST also be provided in the SDP transport file. What a Controller observe, a Receiver shall also observe it.
+  Informative note: ST 2110-22 does not require the `sampling` or `depth` SDP parameters. RFC 6184 does not define any such SDP parameters. The `sampling`, `width`, `heigh`t and `depth` of the associated uncompressed picture MUST be derived from the H.264 active parameter set by the Receiver. 
+  
+  If a stream complies with other specifications in addition to RFC 6184 about the parameters declared in the "fmtp=" attribute of an SDP transport file, those parameters MUST comply with the stream's active parameter sets.
+  
+- [ ] All the information encoded in the `components` attribute MUST also be provided in the SDP transport file. What a Controller observe, a Receiver shall also observe it. There is an exception with in-band parameter sets where the information is provided in-band for the Receiver, not in the SDP transport file.
   
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#profile)  
   The Flow resource MUST indicate the H.264 profile, which defines algorithmic features and limits that shall be supported by all decoders conforming to that profile. The Flow's `profile` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional according to RCS 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value in which case it MAY be omited.
