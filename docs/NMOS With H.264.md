@@ -156,8 +156,6 @@ An example Flow resource is provided in the [Examples](../examples/).
 
 The Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. 
 
-- [ ] TODO: add ndi and srt transport when the specification is available.
-
 Sender resources provide no indication of media type or format, since this is described by the associated Flow resource.
 
 The SDP file at the `manifest_href` MUST comply with the requirements of RFC 6184 in the [Declarative Session Description](https://datatracker.ietf.org/doc/html/rfc6184#section-8.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 6184 is not supported. The "fmtp" source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported. 
