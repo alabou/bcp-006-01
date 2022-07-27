@@ -59,7 +59,7 @@ These attributes provide information for Controllers and Users to evaluate strea
   
   Informative note: It implies that having SDP parameters describing aspects of the stream's active paramter set produces change of the SDP transport file content when the stream's active parameter set values change.
   
-- [ ] Tthe information encoded in the `components` attribute MUST also be provided in the SDP transport file. What a Controller observe, a Receiver shall also observe it. There is an exception with in-band parameter sets where the information is provided in-band for the Receiver, not in the SDP transport file.
+- [ ] The information encoded in the `components` attribute MUST also be provided in the SDP transport file. What a Controller observe, a Receiver shall also observe it. There is an exception with in-band parameter sets where the information is provided in-band for the Receiver, not in the SDP transport file.
   
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#profile)  
   The Flow resource MUST indicate the H.264 profile, which defines algorithmic features and limits that shall be supported by all decoders conforming to that profile. The Flow's `profile` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional according to RFC 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value, in which case it MAY be omited.
@@ -160,7 +160,7 @@ Sender resources provide no indication of media type or format, since this is de
 
 The SDP file at the `manifest_href` MUST comply with the requirements of RFC 6184 in the [Declarative Session Description](https://datatracker.ietf.org/doc/html/rfc6184#section-8.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 6184 is not supported. The "fmtp" source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported. 
 
-- [ ] For H.265 indicate also that "The tx-mode parmeter of the SDP transport file SHALL not be omited or always set to SRST (Single RTP Stream Transport). 
+- [ ] For H.265 the document must indicate that "The tx-mode parmeter of the SDP transport file SHALL not be omited and always set to SRST (Single RTP Stream Transport). 
 
 If the Sender meets the traffic shaping and delivery timing requirements specified for ST 2110-22, the SDP file MUST also comply with the provisions of ST 2110-22.
 
@@ -187,6 +187,14 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
 - [ST 2110-21 Sender Type](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#st-2110-21-sender-type)  
   If the Sender complies with the traffic shaping and delivery timing requirements for ST 2110-22, it MUST include the `st2110_21_sender_type` attribute.
 
+- [Parameter Sets_Flow_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
+  - enum possible values are: "single", "multi", OPTIONAL property.
+  - A Sender indicates the actual mode of operation which is either "single" or "multi". This property is optional. If unspecified the default value is "single".
+
+- [Parameter Sets_Transport_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
+  - enum possible values are: "in-band", "out-of-band", "in-and-out-of-band", OPTIONAL property.
+  - A Sender indicates the actual mode of operation which is either "in-band", "out-of-band", "in-and-out-of-band". This property is optional. If unspecified the default value of "out-of-band".
+
 An example Sender resource is provided in the [Examples](../examples/).
 
 The H.264 encoder of a Sender MUST produces an H.264 bitstream that is compliant with the `profile-level-id` declared in the stream's associated SDP transport file.
@@ -212,19 +220,26 @@ The following parameter constraints can be used to express limits or preferences
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#packet-transmission-mode)
   - Only one mode MUST be specified.  If a Receiver does not indicate a `packet_transmission_mode` constraint it is assumed as supporting "single_nal_unit" mode.
 
-- [MultiFlow Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#multiflow-parameter-sets)
+- [Parameter Sets_Flow_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
+
+  - enum possible values are: "single", "multi"
 
   - A Receiver declares the multi-flow capability to indicate the it supports H.264 streams using various parameter sets. As each active parameter set is associated to a specific Flow. This capability indicates that a Receiver is capable of decoding H.264 streams where the associated Flow changes dynamically. All the parameter sets comply with the `profile-level-id` parameter of the stream associated SDP transport file. The parameter sets are specified out-of-band using the `sprop-parameter-sets` attribute of an SDP transport file if the following in-band capability is not declared and both out-of-band and in-band otherwise.
+  - A Receiver supporting "multi" MUST also support "single" and MUST have both values "single" and "multi" in the enum Receiver Capability in order to allow Senders operating in any parameter-sets-flow-mode.
 
 - [ ] TODO: describe that a Sender always has the ability to switch active parameter sets independently of this capability (unless constrained by IS-11). A Receiver not supporting the multi-flow capability would fail a PATCH if more than one parameter sets is provided in the SDP transport file.
 
-- [In-Band Parameter Sets](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#in-band-parameter-sets)
+- [Parameter Sets_Transport_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
+
+  - enum possible values are: "in-band", "out-of-band", "in-and-out-of-band"
 
   - A Receiver declares the in-band capability to indicate the it supports H.264 streams producing in-band parameter sets that update or augment the initial out-of-band parameter sets. A receiver SHALL be capable of decoding in-band parameter sets and behave according to its capabilities if those are not duplicate of the original out-of-band parameter sets.
+ - A Receiver supporting "in-and-out-of-band" MUST also support "in-band" and "out-of-band" and SHOULD have all values "in-band", "out-of-band" and "in-and-out-of-band" in the enum Receiver Capability in order to allow Senders operating in any parameter-sets-transport-mode.
 
 - [ ] TODO: describe that a Sender always has the ability to switch active parameter sets independently of this capability (unless constrained by IS-11). A Receiver not supporting the in-band capability would become inactive if in-band parameter sets do not match the out-of-band ones.
 
 - [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) 
+  - Integer indicating the maximum aspect ratio value of aspect_ratio_idc smaller than 255 that the receiver understands and support (sar-understood SHOULD be assumed to match sar-supported).
 
 - [ ] TODO: sar-understood should be assumed to match sar-supported
 
