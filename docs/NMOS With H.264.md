@@ -18,6 +18,7 @@ AMWA IS-04 and IS-05 already have support for RTP transport and can signal the m
 - [ ] TODO: Should we reference the VSF's IPMX protocol here or limit to actual ST-2110 protocols which IPMX uses.
 - [ ] TODO: References are made to the ITU-T H.264 specification instead of the ISO because it is more accessible (free).
 - [ ] TODO: This specification shall be written without assuming ST-2110 transport ... It shall only be based on RFC 6184 and add "if ST-2110 is used then" ...
+- [ ] TODO: Issue in the way format specifications are written: what if a Flow has not assocaited Sender but is a child of a MUX Flow which is assocaited with a Sender. The Sender is the one streaming the multiplexed Flows and cannot receive the properties of each H.264 Flows because there may be multiple such Flows and we get properties clashing at the Sender ....
 
 ## Use of Normative Language
 
