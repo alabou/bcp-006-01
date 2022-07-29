@@ -155,6 +155,8 @@ An example Flow resource is provided in the [Examples](../examples/).
 
 ### Senders
 
+#### RTP based transport
+
 The Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. 
 
 Sender resources provide no indication of media type or format, since this is described by the associated Flow resource.
@@ -202,6 +204,24 @@ The H.264 encoder of a Sender MUST produces an H.264 bitstream that is compliant
 
 - [ ] Should we have Sender Capabilities matching the Receiver Capabilities to indicate to a Controller what the Sender can do or is doing. The Sender can only be constrained by IS-11 but a Controller could at least know if a Sender is actually compatible with a Receiver.
 
+#### Other transports
+
+The Sender resource MUST indicate the `urn:x-nmos:transport:` label of the transport or one of its subclassifications for the `transport` attribute. 
+
+Sender resources provide no indication of media type or format, since this is described by the associated Flow resource.
+
+The `manifest_href` attribute MUST be `null` as an SDP transport file is not supported.
+
+- [Parameter Sets_Flow_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
+  - enum possible values are: "single", "multi", OPTIONAL property.
+  - A Sender indicates the actual mode of operation which is either "single" or "multi". This property is optional. If unspecified the default value is "single".
+
+- [Parameter Sets_Transport_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
+  - enum possible values are: "in-band", "out-of-band", "in-and-out-of-band", OPTIONAL property.
+  - A Sender MUST indicates the "in-band" mode of operation as there is no SDP transport file to trnaport the parameter sets out-of-band.
+
+The H.264 encoder of a Sender MUST produces an H.264 bitstream that is compliant with the profile and level declared in the bitstream parameter sets.
+
 ## H.264 IS-04 Receivers
 
 Nodes capable of receiving H.264 video streams MUST have a Receiver resource in the IS-04 Node API, which lists `video/h264` in the `media_types` array within the `caps` object.
@@ -242,7 +262,8 @@ The following parameter constraints can be used to express limits or preferences
 - [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) 
   - Integer indicating the maximum aspect ratio value of aspect_ratio_idc smaller than 255 that the receiver understands and support (sar-understood SHOULD be assumed to match sar-supported).
 
-- [ ] TODO: sar-understood should be assumed to match sar-supported
+- [ ] TODO: sar-understood should be assumed to match sar-supported. 
+- [ ] TODO: Have a Sender property to indicate actual SAR ? is based on SDP transport file Video Usability Information (VUI) parameter sets. If send out-of-band then a Controller has no visibility.
 
 When the H.264 decoder has no restrictions of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels need not be enumerated.
 
@@ -263,12 +284,18 @@ A Receiver MUST be able to decode a bitstream conforming to the profiles and lev
 
 ## H.264 IS-05 Senders and Receivers
 
+### RTP transport
+
 Connection Management using IS-05 proceeds in exactly the same manner as for any other stream format carried within RTP.
 The SDP file at the **/transportfile** endpoint on Senders MUST comply with the requirements of RFC 6184 and, if appropriate, ST 2110-22.
 
 An SDP file provided in the `transport_file` attribute of a `PATCH` request on the **/staged** endpoint of Receivers MUST also comply with RFC 6184 and, if appropriate, ST 2110-22.
 
 An example SDP file is provided in the [Examples](../examples/).
+
+### Other transports
+
+Connection Management using IS-05 proceeds in exactly the same manner as for any other stream format carried by transport other than RTP.
 
 #### Parameter Sets
 
@@ -290,7 +317,7 @@ A Receiver without this capability requires that a coded stream uses at most one
 
 A Receiver with this capability supports that a coded stream uses multiple active parameter sets. Such active parameter sets MAY be obtained out-of-band and/or in-band if the Receiver supports the `in_band_parameter_sets` Capability. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MAY contain multiple initial parameter sets. When obtained in-band the Sender is allowed to transmit multiple in-band parameter sets to update parameter sets initially received out-of-band or to add and update new ones.
 
-A Sender is allowed, unless constrained by IS-11, to produces H.264 coded streams that comply with the `profile-level-id` declared in the Sender's SDP transport file and the `profile` and `level` of the associated Flow. As such a Sender MAY use one or multiple active parameter sets as per the [H.264] specification. A Sender MAY seamlessly change dynamically the coded stream's active parameter set, provided that the Flow associated with the Sender changes accordingly and the content of the SDP transport file does not change. If the content of the SDP transport file changes, the Sender SHALL comply with IS-04, IS-05.
+A Sender is allowed, unless constrained by IS-11, to produces H.264 coded streams that comply with the `profile-level-id` declared in the Sender's SDP transport file and the `profile` and `level` of the associated Flow. As such a Sender MAY use one or multiple active parameter sets as per the [H.264] specification. A Sender MAY seamlessly change dynamically the coded stream's active parameter set, provided that the Flow associated with the Sender changes accordingly and the content of the SDP transport file does not change. If the content of the SDP transport file changes, the Sender SHALL comply with IS-04, IS-05. A Sender indicates its mode of operation with the `parameter_sets_flow_mode` and `parameter_sets_transmode_mode` attributes.
 
 - [ ] Note to ST 2110-22: An H.264 stream will not be able to fully benefit from the seamless transitions of parameter sets because of the attributes width, height and exactframerate that are part of the SDP transport file are not allowed to change. 
 - [ ] Note to IPMX: An IPMX H.264 stream will not be able to benefit from the seamless transitions of parameter sets because of the attributes measuredpixclk, htotal and vtotal that are part of the SDP transport file are not allowed to change and cannot be inferred from the parameter sets. 
