@@ -42,7 +42,7 @@ The Source is therefore unaffected by the use of H.264 compression.
 ### Flows
 
 The Flow resource MUST indicate `video/h264` in the `media_type` attribute, and `urn:x-nmos:format:video` for the `format`.
-This has been permitted since IS-04 v1.1.
+This has been permitted since IS-04 v1.1. Flow resources can be associated with many Senders at the same time. The Flow is therefore unaffected by the use of a specific transport.
 
 For Nodes implementing IS-04 v1.3 or higher, the following additional requirements on the Flow resource apply.
 
@@ -60,10 +60,10 @@ These attributes provide information for Controllers and Users to evaluate strea
   
   Informative note: It implies that having SDP parameters describing aspects of the stream's active paramter set produces change of the SDP transport file content when the stream's active parameter set values change.
   
-- [ ] The information encoded in the `components` attribute MUST also be provided in the SDP transport file. What a Controller observe, a Receiver shall also observe it. There is an exception with in-band parameter sets where the information is provided in-band for the Receiver, not in the SDP transport file.
-  
+  Informative note: The information encoded in the `components` attribute should also be provided in the SDP transport file. What a Controller observes, a Receiver should also observe it. There is an exception with in-band parameter sets where the information is provided in-band for the Receiver, not in the SDP transport file. In such a case a Controller still has access to the `components` attribute. A Receiver would not have access to such information at `PATCH` request on the **/staged** endpoint but just-in time while decoding the bitstream active parameter sets. 
+
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#profile)  
-  The Flow resource MUST indicate the H.264 profile, which defines algorithmic features and limits that shall be supported by all decoders conforming to that profile. The Flow's `profile` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional according to RFC 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value, in which case it MAY be omited.
+  The Flow resource MUST indicate the H.264 profile, which defines algorithmic features and limits that SHALL be supported by all decoders conforming to that profile. The Flow's `profile` attribute maps to the `profile-level-id` parameter of the SDP transport file which is OPTIONAL according to RFC 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value, in which case it MAY be omited.
   The permitted `profile` values are strings, defined as per ITU-T Rec. H.264 Annex A
   - "ConstrainedBaseline"
   - "Baseline" (Default if not specified in the SDP transport file) 
@@ -81,7 +81,11 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "HighIntra-444"
   - "CAVLCIntra-444"
   
-- [ ] For H.265 the profiles are as follow and map to `profile-id`. The profile-space parameter of the SDP transprot file SHALL be omited or alwyas be 0.
+    Informative note: The Flow's `profile` attribute is always required. It is the SDP transport file `profile-level-id` parameter that may be omited when matching the default value.
+    
+  The Flow resource MUST indicate the H.265 profile, which defines algorithmic features and limits that SHALL be supported by all decoders conforming to that profile. The Flow's `profile` attribute maps to the `profile-id` parameter of the SDP transport file which is OPTIONAL according to RFC 7798 and REQUIRED by this specification unless the `profile-id` parameter corresponds to the default value, in which case it MAY be omited. The `profile-space` parameter of the SDP transprot file SHALL be omited or alwyas be 0.
+  The permitted `profile` values are strings, defined as per ITU-T Rec. H.265 Annex A
+  
   - Main (Default if not specified in the SDP transport file) 
   - Main10 
   - Main10Still 
@@ -119,8 +123,10 @@ These attributes provide information for Controllers and Users to evaluate strea
   - ScreenExtendedHighThroughput10-444 
   - ScreenExtendedHighThroughput14-444 
   
+  Informative note: The Flow's `profile` attribute is always required. It is the SDP transport file `profile-id` parameter that may be omited when matching the default value.
+  
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#level)  
-  The Flow resource MUST indicate the H.264 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.264 bitstream. The Flow's `level` attribute map to the `profile-level-id` parameter of the SDP transport file which is optional according to RFC 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value, in which case it MAY be omited.
+  The Flow resource MUST indicate the H.264 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.264 bitstream. The Flow's `level` attribute map to the `profile-level-id` parameter of the SDP transport file which is OPTIONAL according to RFC 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value, in which case it MAY be omited.
   The permitted `level` values are strings, defined as per ITU-T Rec. H.264 Annex A
   - "1" (Default if not specified in the SDP transport file) 
   - "1b", "1.1", "1.2", "1.3"
@@ -129,8 +135,11 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "4", "4.1", "4.2"
   - "5", "5.1", "5.2"
   - "6", "6.1", "6.2" 
-
-- [ ] For H.265 the levels are as follow and map to `level-id` and `tier-flag`
+  
+  Informative note: The Flow's `level` attribute is always required. It is the SDP transport file `profile-level-id` parameter that may be omited when matching the default value.
+  
+The Flow resource MUST indicate the H.265 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.265 bitstream. The Flow's `level` attribute map to the `level-id` and `tier-flag` parameters of the SDP transport file which is OPTIONAL according to RFC 7798 and REQUIRED by this specification unless the `level-id` and `tier-flag` parameters correspond to the default value, in which case they MAY be omited.
+  The permitted `level` values are strings, defined as per ITU-T Rec. H.265 Annex A
   - "1" 
   - "2", "2.1" 
   - "3" 
@@ -144,6 +153,8 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "High-4", "High-4.1" 
   - "High-5", "High-5.1", "High-5.2" 
   - "High-6", "High-6.1", "High-6.2" 
+
+  Informative note: The Flow's `level` attribute is always required. It is the SDP transport file `level-id` and `tier-flag` parameters that may be omited when matching the default value.
 
 - [Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#bit-rate)  
   The Flow resource MUST indicate the target encoding bit rate (kilobits/second) of the H.264 bitstream. It SHALL comply with the stream's active parameter set associated parameters.
