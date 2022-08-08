@@ -56,11 +56,11 @@ These attributes provide information for Controllers and Users to evaluate strea
   
   Informative note: ST 2110-22 does not require the `sampling` or `depth` SDP parameters. RFC 6184 does not define any such SDP parameters. The `sampling`, `width`, `heigh`t and `depth` of the associated uncompressed picture MUST be derived from the H.264 active parameter set by the Receiver. 
   
-  If a stream complies with other specifications in addition to RFC 6184 about the parameters declared in the "fmtp=" attribute of an SDP transport file, those parameters MUST comply with the stream's active parameter sets.
+  If a stream complies with other specifications in addition to RFC 6184 about the parameters declared in the "fmtp=" attribute of an SDP transport file, those parameters MUST comply with the stream's active parameter set.
   
   Informative note: It implies that having SDP parameters describing aspects of the stream's active paramter set produces change of the SDP transport file content when the stream's active parameter set values change.
   
-  Informative note: The information encoded in the `components` attribute should also be provided in the SDP transport file. What a Controller observes, a Receiver should also observe it. There is an exception with in-band parameter sets where the information is provided in-band for the Receiver, not in the SDP transport file. In such a case a Controller still has access to the `components` attribute. A Receiver would not have access to such information at `PATCH` request on the **/staged** endpoint but just-in time while decoding the bitstream active parameter sets. 
+  Informative note: The information encoded in the `components` attribute should also be provided in the SDP transport file. What a Controller observes, a Receiver should also observe it. There is an exception with in-band parameter sets where the information is provided in-band for the Receiver, not in the SDP transport file. In such a case a Controller still has access to the `components` attribute. A Receiver would not have access to such information at `PATCH` request on the **/staged** endpoint but just-in time while decoding the bitstream active parameter set. 
 
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#profile)  
   The Flow resource MUST indicate the H.264 profile, which defines algorithmic features and limits that SHALL be supported by all decoders conforming to that profile. The Flow's `profile` attribute maps to the `profile-level-id` parameter of the SDP transport file which is OPTIONAL according to RFC 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value, in which case it MAY be omited.
@@ -208,11 +208,11 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
 
 - [Parameter Sets_Flow_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
   - [ ] string enum possible values are: "single", "multi"
-  - If a Sender operates in the multi-Flows mode it MUST set the `parameter-sets-flow-mode` property to "multi". Othersise it MAY omit or set the `parameter-sets-flow-mode` property to "single". If unspecified the default value is "single".
+  - If a Sender operates in the multi-Flows mode it MUST set the `parameter_sets_flow_mode` property to "multi". Othersise it MAY omit or set the `parameter_sets_flow_mode` property to "single". If unspecified the default value is "single".
 
 - [Parameter Sets_Transport_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
   - [ ] string enum possible values are: "in-band", "out-of-band", "in-and-out-of-band"
-  - If a Sender operates with in-band parameter sets it MUST set the `parameter-sets-transport-mode` property to either "in-band" or "in-and-out-of-band". Otherwise it MAY omit or set the `parameter-sets-transport-mode` property to "out-of-band". If unspecified the default value is "out-of-band".
+  - If a Sender operates with in-band parameter sets it MUST set the `parameter_sets_transport_mode` property to either "in-band" or "in-and-out-of-band". Otherwise it MAY omit or set the `parameter_sets_transport_mode` property to "out-of-band". If unspecified the default value is "out-of-band".
 
 An example Sender resource is provided in the [Examples](../examples/).
 
@@ -232,11 +232,11 @@ The `manifest_href` attribute MUST be `null` as an SDP transport file is only su
 
 - [Parameter Sets_Flow_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
   - [ ] string enum possible values are: "single", "multi"
-  - If a Sender operates in the multi-Flows mode it MUST set the `parameter-sets-flow-mode` property to "multi". Othersise it MAY omit or set the `parameter-sets-flow-mode` property to "single". If unspecified the default value is "single".
+  - If a Sender operates in the multi-Flows mode it MUST set the `parameter_sets_flow_mode` property to "multi". Othersise it MAY omit or set the `parameter_sets_flow_mode` property to "single". If unspecified the default value is "single".
 
 - [Parameter Sets_Transport_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
   - [ ] string enum possible values are: "in-band", "out-of-band", "in-and-out-of-band"
-  - If a Sender operates with in-band parameter sets it MUST set the `parameter-sets-transport-mode` property to either "in-band" or "in-and-out-of-band". Otherwise it MAY omit or set the `parameter-sets-transport-mode` property to "out-of-band". If unspecified the default value is "out-of-band".
+  - If a Sender operates with in-band parameter sets it MUST set the `parameter_sets_transport_mode` property to either "in-band" or "in-and-out-of-band". Otherwise it MAY omit or set the `parameter_sets_transport_mode` property to "out-of-band". If unspecified the default value is "out-of-band".
 
 The H.264 encoder of a Sender MUST produces an H.264 bitstream that is compliant with the `profile-level-id` explicitely or implicitely declared in the stream's associated SDP transport file.
 
@@ -276,22 +276,22 @@ The following parameter constraints can be used to express limits or preferences
 
   - [ ] string enum possible values are: "single", "multi"
 
-  - A Receiver declares the `parameter-sets-flow-mode` capability to indicate that it supports bitstreams using various parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.264 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profile-level-id` parameter of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-parameter-sets` attribute of an SDP transport file, in-band through the H.264 bitstream or in-and-out-of-band usign both mechanisms.
+  - A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using various parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.264 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profile-level-id` parameter of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-parameter-sets` attribute of an SDP transport file, in-band through the H.264 bitstream or in-and-out-of-band usign both mechanisms.
  
-  - [ ] A Receiver declares the `parameter-sets-flow-mode` capability to indicate that it supports bitstreams using various parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.265 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profileid`, `level-id` and `tier-flag` parameters of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-vps`, `sprop-sps` and `sprop-pps` attributes of an SDP transport file, in-band through the H.265 bitstream or in-and-out-of-band usign both mechanisms.
-  - A Receiver supporting the "multi" mode MUST also support the "single" mode and such Receiver MUST have both values "single" and "multi" in the enum Receiver Capability in order to allow Senders operating in any parameter-sets-flow-mode.
+  - [ ] A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using various parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.265 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profileid`, `level-id` and `tier-flag` parameters of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-vps`, `sprop-sps` and `sprop-pps` attributes of an SDP transport file, in-band through the H.265 bitstream or in-and-out-of-band usign both mechanisms.
+  - A Receiver supporting the "multi" mode MUST also support the "single" mode and such Receiver MUST have both values "single" and "multi" in the enum Receiver Capability in order to allow Senders operating in any parameter_sets_flow_mode.
 
-- [ ] TODO: describe that a Sender always has the ability to switch active parameter sets independently of this capability (unless constrained by IS-11). A Receiver not supporting the multi-Flows capability would fail a PATCH if more than one parameter sets is provided in the SDP transport file. It would become inactive if the active parameter sets change during decoding.
+- [ ] TODO: describe that a Sender always has the ability to switch the active parameter set independently of this capability (unless constrained by IS-11). A Receiver not supporting the multi-Flows capability would fail a PATCH if more than one parameter sets is provided in the SDP transport file. It would become inactive if the active parameter set change during decoding.
 
 - [Parameter Sets_Transport_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
 
   - [ ] string enum possible values are: "in-band", "out-of-band", "in-and-out-of-band"
 
-  - A Receiver declares the `parameter-sets-transport-mode` capability to indicate that it supports bitstreams producing in-band parameter sets that update or augment the initial out-of-band parameter sets. If declaring "in-band" or "in-and-out-of-band" capabilities a Receiver SHALL be capable of decoding in-band parameter sets and behave according to its capabilities if those are not duplicate of the original out-of-band parameter sets.
+  - A Receiver declares the `parameter_sets_transport_mode` capability to indicate that it supports bitstreams producing in-band parameter sets that update or augment the initial out-of-band parameter sets. If declaring "in-band" or "in-and-out-of-band" capabilities a Receiver SHALL be capable of decoding in-band parameter sets and behave according to its capabilities if those are not duplicate of the original out-of-band parameter sets.
 
- - A Receiver supporting "in-and-out-of-band" MUST also support "in-band" and "out-of-band" and SHOULD have all values "in-band", "out-of-band" and "in-and-out-of-band" in the enum Receiver Capability in order to allow Senders operating in any parameter-sets-transport-mode.
+ - A Receiver supporting "in-and-out-of-band" MUST also support "in-band" and "out-of-band" and SHOULD have all values "in-band", "out-of-band" and "in-and-out-of-band" in the enum Receiver Capability in order to allow Senders operating in any parameter_sets_transport_mode.
 
-- [ ] TODO: describe that a Sender always has the ability to switch active parameter sets independently of this capability (unless constrained by IS-11). A Receiver not supporting the in-band capability would become inactive if in-band parameter sets do not match the out-of-band ones.
+- [ ] TODO: describe that a Sender always has the ability to switch the active parameter set independently of this capability (unless constrained by IS-11). A Receiver not supporting the in-band capability would become inactive if in-band parameter sets do not match the out-of-band ones.
 
 - [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) 
   - A Receiver supporting `aspect_ratio_idc` values that are defined as `Reserved` in Table E-1 of the [H.264][] specification indicate, such the maximum value of `aspect_ratio_idc` using this Receiver Capability. The `sar-supported` attribute is an integer indicating the maximum value of `aspect_ratio_idc` smaller than 255 that the Receiver understands and support (sar-understood SHOULD be assumed to match sar-supported, both being defined in RFC 6184). The value of this parameter is an integer in the range of 1 to sar-understood, inclusive, equal to 255. The value of sar-supported equal to N smaller than 255 indicates that the receiver supports all the SARs corresponding to H.264 aspect_ratio_idc values (see Table E-1 of [H.264][]) in the range from 1 to N, inclusive, without geometric distortion.  The value of sar-supported equal to 255 indicates that the receiver supports all sample aspect ratios that are expressible using two 16-bit integer values as the numerator and denominator, i.e., those that are expressible using the H.264 aspect_ratio_idc value of 255 (Extended_SAR, see Table E-1 of [H.264][]), without geometric distortion.
@@ -336,27 +336,29 @@ An example SDP file is provided in the [Examples](../examples/).
 
 Connection Management using IS-05 proceeds in exactly the same manner as for any other stream format carried by transport other than RTP.
 
-#### Parameter Sets
+### Parameter Sets
+
+- [ ] TODO: Adapt for H.265 changing the references to specifications and SDP attributes.
 
 The active parameter set of an H.264 stream is made of the active sequence and picture parameter sets. The parameter sets of an H.264 stream are are transmitted by a Sender to Receivers either out-of-band through an SDP transport file or in-band through the coded stream. The active parameter set of an H.264 coded stream MUST reference valid out-of-band or in-band parameter sets, the stream is invalid otherwise.
 
-The `sprop-parameter-sets` parameter of an SDP transport file MAY contain a collection of out-of-band parameter sets. Those parameter sets provide initial parameter sets for the H.264 stream before decoding starts.
+The `sprop-parameter-sets` parameter of an SDP transport file MAY contain a collection of out-of-band parameter sets. Those parameter sets provide initial parameter sets for the H.264 stream before the decoding starts.
 
-An H.264 stream may transport in-band parameter sets to update parameter sets received out-of-band or to define addtional parameter sets. The `in_band_parameter_sets` Receiver Capability indicates that a Receiver supports getting updated or additional parameter sets in-band.
+An H.264 stream may transport in-band parameter sets to update parameter sets received out-of-band or to define addtional parameter sets. The `parameter_sets_transport_mode` Receiver Capability indicates that a Receiver supports getting updated or additional parameter sets in-band.
 
 The current active parameter set of an H.264 stream MUST comply with the current Flow associated with the Sender that produce the coded stream and the related parameters of the `fmtp=` attribute of the Sender's SDP transport file.
 
-The current active parameter sets of an H.164 stream MUST comply with the `profile-level-id` declared in the Sender's SDP transport file and the `profile` and `level` of the associated Flow.
+The current active parameter set of an H.264 stream MUST comply with the `profile-level-id` declared in the Sender's SDP transport file and the `profile` and `level` of the associated Flow.
 
 A Receiver MUST verify that the current active parameter set comply with the Receiver's Capabilities. If a Receiver support only out-of-band parameter sets it SHOULD perform the verification when a Controller PATCH the **/staged** endpoint for activation. In this situation, all the out-of-band parameter sets MUST be compliant with the Receiver Capabilities. Otherwise if a Receiver supports both out-of-band and in-band parameter sets it SHOULD perform the verification of the out-of-band parameter sets when a Controller PATCH the **/staged** endpoint for activation and it MUST perform the verification of the in-band parameter sets just-in-time as it decodes the stream. In this situation, all the out-of-band and in-band parameter sets MUST be compliant with the Receiver Capabilities.
 
-The `multiflow_parameter_sets` Receiver Capability indicates that a Receiver supports decoding an H.264 stream where the active parameter set changes dynamically. 
+The `parameter_sets_flow_mode` Receiver Capability indicates that a Receiver supports decoding an H.264 stream where the active parameter set changes dynamically. 
 
 A Receiver without this capability requires that a coded stream uses at most one active parameter set. Such active parameter set MAY be obtained out-of-band or in-band if the Receiver supports the `in_band_parameter_sets` Capability. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MUST contain only the active parameter set. When obtained in-band the `sprop-parameter-sets` parameter of an SDP transport file MUST be empty or omited and the Sender  transmits the active parameter set in-band. At all time, the Sender is allowed to transmit in-band parameter sets that are duplicates of the initial active parameter set obtained either out-of-band or in-band. Out-of-band parameter sets have priority over in-band paraemeters sets, so receiving the active parameter set out-of-band from the `sprop-parameter-sets` parameter does not allow further receiving in-band parameter sets that are not duplicates.
 
-A Receiver with this capability supports that a coded stream uses multiple active parameter sets. Such active parameter sets MAY be obtained out-of-band and/or in-band if the Receiver supports the `in_band_parameter_sets` Capability. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MAY contain multiple initial parameter sets. When obtained in-band the Sender is allowed to transmit multiple in-band parameter sets to update parameter sets initially received out-of-band or to add and update new ones.
+A Receiver with this capability supports that a coded stream uses multiple active parameter sets. Such parameter sets MAY be obtained out-of-band and/or in-band according to the Receiver `parameter_sets_transport_mode` Capability. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MAY contain multiple initial parameter sets. When obtained in-band the Sender is allowed to transmit multiple in-band parameter sets to update parameter sets initially received out-of-band or to add and update new ones.
 
-A Sender is allowed, unless constrained by IS-11, to produces H.264 coded streams that comply with the `profile-level-id` declared in the Sender's SDP transport file and the `profile` and `level` of the associated Flow. As such a Sender MAY use one or multiple active parameter sets as per the [H.264] specification. A Sender MAY seamlessly change dynamically the coded stream's active parameter set, provided that the Flow associated with the Sender changes accordingly and the content of the SDP transport file does not change. If the content of the SDP transport file changes, the Sender SHALL comply with IS-04, IS-05. A Sender indicates its mode of operation with the `parameter_sets_flow_mode` and `parameter_sets_transmode_mode` attributes.
+A Sender is allowed, unless constrained by IS-11, to produces H.264 coded streams that comply with the `profile-level-id` declared in the Sender's SDP transport file and the `profile` and `level` of the associated Flow. As such a Sender MAY use one or multiple active parameter sets as per the [H.264] specification. A Sender MAY seamlessly change dynamically the coded stream's active parameter set, provided that the Flow associated with the Sender changes accordingly and the content of the SDP transport file does not change. If the content of the SDP transport file changes, the Sender SHALL comply with IS-04, IS-05. A Sender indicates its mode of operation with the `parameter_sets_flow_mode` and `parameter_sets_transport_mode` attributes.
 
 - [ ] Note to ST 2110-22: An H.264 stream will not be able to fully benefit from the seamless transitions of parameter sets because of the attributes width, height and exactframerate that are part of the SDP transport file are not allowed to change. 
 - [ ] Note to IPMX: An IPMX H.264 stream will not be able to benefit from the seamless transitions of parameter sets because of the attributes measuredpixclk, htotal and vtotal that are part of the SDP transport file are not allowed to change and cannot be inferred from the parameter sets. 
