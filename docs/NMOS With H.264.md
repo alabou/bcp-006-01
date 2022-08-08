@@ -294,12 +294,15 @@ The following parameter constraints can be used to express limits or preferences
 - [ ] TODO: describe that a Sender always has the ability to switch active parameter sets independently of this capability (unless constrained by IS-11). A Receiver not supporting the in-band capability would become inactive if in-band parameter sets do not match the out-of-band ones.
 
 - [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) 
-  - Integer indicating the maximum aspect ratio value of aspect_ratio_idc smaller than 255 that the receiver understands and support (sar-understood SHOULD be assumed to match sar-supported).
+  - A Receiver supporting `aspect_ratio_idc` values that are defined as `Reserved` in Table E-1 of the [H.264][] specification indicate, such the maximum value of `aspect_ratio_idc` using this Receiver Capability. The `sar-supported` attribute is an integer indicating the maximum value of `aspect_ratio_idc` smaller than 255 that the Receiver understands and support (sar-understood SHOULD be assumed to match sar-supported, both being defined in RFC 6184). The value of this parameter is an integer in the range of 1 to sar-understood, inclusive, equal to 255. The value of sar-supported equal to N smaller than 255 indicates that the receiver supports all the SARs corresponding to H.264 aspect_ratio_idc values (see Table E-1 of [H.264][]) in the range from 1 to N, inclusive, without geometric distortion.  The value of sar-supported equal to 255 indicates that the receiver supports all sample aspect ratios that are expressible using two 16-bit integer values as the numerator and denominator, i.e., those that are expressible using the H.264 aspect_ratio_idc value of 255 (Extended_SAR, see Table E-1 of [H.264][]), without geometric distortion.
 
-- [ ] TODO: sar-understood should be assumed to match sar-supported. 
-- [ ] TODO: Have a Sender property to indicate actual SAR ? is based on SDP transport file Video Usability Information (VUI) parameter sets. If send out-of-band then a Controller has no visibility.
+  - [ ] A Receiver supporting `aspect_ratio_idc` values that are defined as `Reserved` in Table E-1 of the [H.265][] specification indicate, such the maximum value of `aspect_ratio_idc` using this Receiver Capability. The `sar-supported` attribute is an integer indicating the maximum value of `aspect_ratio_idc` smaller than 255 that the Receiver understands and support (sar-understood SHOULD be assumed to match sar-supported, both being defined in RFC 6184 and such definitions reused for H.265 as they are not part of RFC 7798). The value of this parameter is an integer in the range of 1 to sar-understood, inclusive, equal to 255. The value of sar-supported equal to N smaller than 255 indicates that the receiver supports all the SARs corresponding to H.264 aspect_ratio_idc values (see Table E-1 of [H.265][]) in the range from 1 to N, inclusive, without geometric distortion.  The value of sar-supported equal to 255 indicates that the receiver supports all sample aspect ratios that are expressible using two 16-bit integer values as the numerator and denominator, i.e., those that are expressible using the H.264 aspect_ratio_idc value of 255 (Extended_SAR, see Table E-1 of [H.265][]), without geometric distortion.
+
+- [ ] TODO: Have a Sender property to indicate actual SAR which is based on Video Usability Information (VUI) parameter sets. If send out-of-band then a Controller has no visibility.
 
 When the H.264 decoder has no restrictions of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels need not be enumerated.
+
+- [ ] When the H.265 decoder has no restrictions of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels need not be enumerated.
 
 Other existing parameter constraints, such as the following, are also appropriate to express limitations on supported H.264 video streams:
 
@@ -314,7 +317,7 @@ Other existing parameter constraints, such as the following, are also appropriat
 
 An example Receiver resource is provided in the [Examples](../examples/).
 
-A Receiver MUST be able to decode a bitstream conforming to the profiles and levels declared in the Receiver Capabilities or the implied default value of such capabilities. A Receiver may have preferences and more optimal profiles and levels that may be declared through Receiver Capabilities. A preferred constraint set MAY indicate such preferences while another constraint set MAY indicate full support of some profiles and levels. A Receiver MAY further constraint the support of an H.264 bitstream compliant with a profile and level using other constraints in its Receiver Capabilities.
+A Receiver MUST be able to decode a bitstream conforming to the profiles and levels declared in the Receiver Capabilities or the implied default value of such capabilities. A Receiver may have preferences and more optimal profiles and levels that may be declared through Receiver Capabilities. A preferred constraint set MAY indicate such preferences while another constraint set MAY indicate full support of some profiles and levels. A Receiver MAY further constraint the support of a coded bitstream compliant with a profile and level using other constraints in its Receiver Capabilities.
 
 ## H.264 IS-05 Senders and Receivers
 
@@ -324,6 +327,8 @@ Connection Management using IS-05 proceeds in exactly the same manner as for any
 The SDP file at the **/transportfile** endpoint on Senders MUST comply with the requirements of RFC 6184 and, if appropriate, ST 2110-22.
 
 An SDP file provided in the `transport_file` attribute of a `PATCH` request on the **/staged** endpoint of Receivers MUST also comply with RFC 6184 and, if appropriate, ST 2110-22.
+
+- [ ] An SDP file provided in the `transport_file` attribute of a `PATCH` request on the **/staged** endpoint of Receivers MUST also comply with RFC 7798 and, if appropriate, ST 2110-22.
 
 An example SDP file is provided in the [Examples](../examples/).
 
