@@ -263,8 +263,8 @@ The `constraint_sets` parameter within the `caps` object can be used to describe
 The following parameter constraints can be used to express limits or preferences specifically defined by Rec. ITU-T H.264 and RFC 6184 for H.264 decoders:
 
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#profile)
-  - Some H.264 profiles are superset of other profiles. From the point of view of Receiver Capabilities such superset profile is assumed to also correspond to the associated subset profiles such that Receiver Capabilities does not have to include the subset profiles. The H.264 speci
-  - fication describe the relationship among the profiles. If a Receiver does not indicate a `profile` constraint it is assumed as supporting the "Baseline" profile.
+  - Some H.264 profiles are superset of other profiles. From the point of view of Receiver Capabilities such superset profile is assumed to also correspond to the associated subset profiles such that Receiver Capabilities does not have to include the subset profiles. The H.264 specification describe the relationship among the profiles. If a Receiver does not indicate a `profile` constraint it is assumed as supporting the "Baseline" profile.
+
   - [ ] Some H.265 profiles are superset of other profiles. From the point of view of Receiver Capabilities such superset profile is assumed to also correspond to the associated subset profiles such that Receiver Capabilities does not have to include the subset profiles. The H.265 specification describe the relationship among the profiles. If a Receiver does not indicate a `profile` constraint it is assumed as supporting the "Main" profile.
 
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#level)
@@ -275,10 +275,12 @@ The following parameter constraints can be used to express limits or preferences
 
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#packet-transmission-mode)
   - Only one mode MUST be specified.  If a Receiver does not indicate a `packet_transmission_mode` constraint it is assumed as supporting "single_nal_unit" mode.
+  - Target the `packet_transmission_mode` property of the Sender.
 
 - [Parameter Sets Flow Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
 
   - [ ] string enum possible values are: "single", "multi"
+  - [ ] Target the `parameter_sets_flow_mode` of the Sender.
 
   - A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using one and/or multiple active parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.264 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profile-level-id` parameter of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-parameter-sets` attribute of an SDP transport file, in-band through the H.264 bitstream or in-and-out-of-band usign both mechanisms. See the "Parameter Sets" section for more details.
  
@@ -292,6 +294,7 @@ The following parameter constraints can be used to express limits or preferences
 - [Parameter Sets Transport Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
 
   - [ ] string enum possible values are: "in-band", "out-of-band", "in-and-out-of-band"
+  - [ ] Target the `parameter_sets_transport_mode` of the Sender.
 
   - A Receiver declares the `parameter_sets_transport_mode` capability to indicate that it supports bitstreams producing in-band parameter sets that update or augment the initial out-of-band parameter sets. If declaring "in-band" or "in-and-out-of-band" capabilities a Receiver SHALL be capable of decoding in-band parameter sets and behave according to its capabilities if those are not duplicate of the original out-of-band parameter sets.
 
