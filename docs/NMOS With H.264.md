@@ -206,11 +206,11 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
   If the Sender complies with the traffic shaping and delivery timing requirements for ST 2110-22, it MUST include the `st2110_21_sender_type` attribute.
   - [ ] Add VBR case
 
-- [Parameter Sets_Flow_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
+- [Parameter Sets Flow Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
   - [ ] string enum possible values are: "single", "multi"
   - If a Sender operates in the multi-Flows mode it MUST set the `parameter_sets_flow_mode` property to "multi". Othersise it MAY omit or set the `parameter_sets_flow_mode` property to "single". If unspecified the default value is "single".
 
-- [Parameter Sets_Transport_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
+- [Parameter Sets Transport Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
   - [ ] string enum possible values are: "in-band", "out-of-band", "in-and-out-of-band"
   - If a Sender operates with in-band parameter sets it MUST set the `parameter_sets_transport_mode` property to either "in-band" or "in-and-out-of-band". Otherwise it MAY omit or set the `parameter_sets_transport_mode` property to "out-of-band". If unspecified the default value is "out-of-band".
 
@@ -230,11 +230,11 @@ Sender resources provide no indication of media type or format, since this is de
 
 The `manifest_href` attribute MUST be `null` as an SDP transport file is only supported for RTP based transports.
 
-- [Parameter Sets_Flow_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
+- [Parameter Sets Flow Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
   - [ ] string enum possible values are: "single", "multi"
   - If a Sender operates in the multi-Flows mode it MUST set the `parameter_sets_flow_mode` property to "multi". Othersise it MAY omit or set the `parameter_sets_flow_mode` property to "single". If unspecified the default value is "single".
 
-- [Parameter Sets_Transport_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
+- [Parameter Sets Transport Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
   - [ ] string enum possible values are: "in-band", "out-of-band", "in-and-out-of-band"
   - If a Sender operates with in-band parameter sets it MUST set the `parameter_sets_transport_mode` property to either "in-band" or "in-and-out-of-band". Otherwise it MAY omit or set the `parameter_sets_transport_mode` property to "out-of-band". If unspecified the default value is "out-of-band".
 
@@ -272,7 +272,7 @@ The following parameter constraints can be used to express limits or preferences
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#packet-transmission-mode)
   - Only one mode MUST be specified.  If a Receiver does not indicate a `packet_transmission_mode` constraint it is assumed as supporting "single_nal_unit" mode.
 
-- [Parameter Sets_Flow_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
+- [Parameter Sets Flow Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
 
   - [ ] string enum possible values are: "single", "multi"
 
@@ -283,7 +283,7 @@ The following parameter constraints can be used to express limits or preferences
 
 - [ ] TODO: describe that a Sender always has the ability to switch the active parameter set independently of this capability (unless constrained by IS-11). A Receiver not supporting the multi-Flows capability would fail a PATCH if more than one parameter sets is provided in the SDP transport file. It would become inactive if the active parameter set change during decoding.
 
-- [Parameter Sets_Transport_Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
+- [Parameter Sets Transport Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
 
   - [ ] string enum possible values are: "in-band", "out-of-band", "in-and-out-of-band"
 
