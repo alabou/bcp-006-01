@@ -208,11 +208,11 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
 
 - [Parameter Sets Flow Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
   - [ ] string enum possible values are: "single", "multi"
-  - If a Sender operates in the multi-Flows mode it MUST set the `parameter_sets_flow_mode` property to "multi". Othersise it MAY omit or set the `parameter_sets_flow_mode` property to "single". If unspecified the default value is "single".
+  - If a Sender operates in the single-Flow mode it MUST set the `parameter_sets_flow_mode` property to "single". Othersise it MAY omit or set the `parameter_sets_flow_mode` property to "multi". If unspecified the default value is "multi". See the "Parameter Sets" section for more details.
 
 - [Parameter Sets Transport Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
   - [ ] string enum possible values are: "in-band", "out-of-band", "in-and-out-of-band"
-  - If a Sender operates with in-band parameter sets it MUST set the `parameter_sets_transport_mode` property to either "in-band" or "in-and-out-of-band". Otherwise it MAY omit or set the `parameter_sets_transport_mode` property to "out-of-band". If unspecified the default value is "out-of-band".
+  - If a Sender operates with out-of-band parameter sets it MUST set the `parameter_sets_transport_mode` property to either "out-of-band" or "in-and-out-of-band". Otherwise it MAY omit or set the `parameter_sets_transport_mode` property to "in-band". If unspecified the default value is "in-band". See the "Parameter Sets" section for more details.
 
 An example Sender resource is provided in the [Examples](../examples/).
 
@@ -232,15 +232,19 @@ The `manifest_href` attribute MUST be `null` as an SDP transport file is only su
 
 - [Parameter Sets Flow Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
   - [ ] string enum possible values are: "single", "multi"
-  - If a Sender operates in the multi-Flows mode it MUST set the `parameter_sets_flow_mode` property to "multi". Othersise it MAY omit or set the `parameter_sets_flow_mode` property to "single". If unspecified the default value is "single".
+  - If a Sender operates in the single-Flow mode it MUST set the `parameter_sets_flow_mode` property to "single". Othersise it MAY omit or set the `parameter_sets_flow_mode` property to "multi". If unspecified the default value is "multi". See the description of the modes at the "IS-04 Receivers" section.
 
 - [Parameter Sets Transport Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
   - [ ] string enum possible values are: "in-band", "out-of-band", "in-and-out-of-band"
-  - If a Sender operates with in-band parameter sets it MUST set the `parameter_sets_transport_mode` property to either "in-band" or "in-and-out-of-band". Otherwise it MAY omit or set the `parameter_sets_transport_mode` property to "out-of-band". If unspecified the default value is "out-of-band".
+  - If a Sender operates with out-of-band parameter sets it MUST set the `parameter_sets_transport_mode` property to either "out-of-band" or "in-and-out-of-band". Otherwise it MAY omit or set the `parameter_sets_transport_mode` property to "in-band". If unspecified the default value is "in-band". See the description of the modes at the "IS-04 Receivers" section.
 
 The H.264 encoder of a Sender MUST produces an H.264 bitstream that is compliant with the `profile-level-id` explicitely or implicitely declared in the stream's associated SDP transport file.
 
 - [ ] The H.265 encoder of a Sender MUST produces an H.265 bitstream that is compliant with the `profile-id`, `level-id` and `tier-flag` explicitely or implicitely declared in the stream's associated SDP transport file.
+
+#### Parent Flows
+
+Flow resources can be associated with many Senders and many other Flows at the same time. A Flow resource may be the parent of many another Flow resources. A Sender associated with the child Flow of some parents H.264 Flows is assumed as having `parameter_sets_flow_mode` set to "multi" and `parameter_sets_transport_mode` set to "in-band" for all the parents H.264 bistreams flowing through the Sender.
 
 ## H.264 IS-04 Receivers
 
@@ -276,10 +280,12 @@ The following parameter constraints can be used to express limits or preferences
 
   - [ ] string enum possible values are: "single", "multi"
 
-  - A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using various parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.264 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profile-level-id` parameter of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-parameter-sets` attribute of an SDP transport file, in-band through the H.264 bitstream or in-and-out-of-band usign both mechanisms.
+  - A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using one and/or multiple active parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.264 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profile-level-id` parameter of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-parameter-sets` attribute of an SDP transport file, in-band through the H.264 bitstream or in-and-out-of-band usign both mechanisms. See the "Parameter Sets" section for more details.
  
-  - [ ] A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using various parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.265 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profileid`, `level-id` and `tier-flag` parameters of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-vps`, `sprop-sps` and `sprop-pps` attributes of an SDP transport file, in-band through the H.265 bitstream or in-and-out-of-band usign both mechanisms.
-  - A Receiver supporting the "multi" mode MUST also support the "single" mode and such Receiver MUST have both values "single" and "multi" in the enum Receiver Capability in order to allow Senders operating in any parameter_sets_flow_mode.
+  - [ ] A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using one and/or multiple active parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.265 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profileid`, `level-id` and `tier-flag` parameters of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-vps`, `sprop-sps` and `sprop-pps` attributes of an SDP transport file, in-band through the H.265 bitstream or in-and-out-of-band usign both mechanisms.See the "Parameter Sets" section for more details.
+
+  - A Receiver supporting the "multi" mode MUST also support the "single" mode. Such Receiver MUST have both "single" and "multi" values enumerated in the Receiver Capability in order to allow Senders operating in any parameter_sets_flow_mode.
+  - [ ] TODO: Should it be better to simply define here that multi included single and have the Controller operate based on that?
 
 - [ ] TODO: describe that a Sender always has the ability to switch the active parameter set independently of this capability (unless constrained by IS-11). A Receiver not supporting the multi-Flows capability would fail a PATCH if more than one parameter sets is provided in the SDP transport file. It would become inactive if the active parameter set change during decoding.
 
@@ -290,15 +296,16 @@ The following parameter constraints can be used to express limits or preferences
   - A Receiver declares the `parameter_sets_transport_mode` capability to indicate that it supports bitstreams producing in-band parameter sets that update or augment the initial out-of-band parameter sets. If declaring "in-band" or "in-and-out-of-band" capabilities a Receiver SHALL be capable of decoding in-band parameter sets and behave according to its capabilities if those are not duplicate of the original out-of-band parameter sets.
 
  - A Receiver supporting "in-and-out-of-band" MUST also support "in-band" and "out-of-band" and SHOULD have all values "in-band", "out-of-band" and "in-and-out-of-band" in the enum Receiver Capability in order to allow Senders operating in any parameter_sets_transport_mode.
+   - [ ] TODO: Should it be better to simply define here that in-and-out-of-band included in-band and out-of-band and have the Controller operate based on that?
 
-- [ ] TODO: describe that a Sender always has the ability to switch the active parameter set independently of this capability (unless constrained by IS-11). A Receiver not supporting the in-band capability would become inactive if in-band parameter sets do not match the out-of-band ones.
+- [ ] TODO: describe that a Sender always has the ability to send in-band parameter sets independently of this capability (unless constrained by IS-11). A Receiver not supporting the in-band capability would become inactive if in-band parameter sets do not match the out-of-band ones.
 
-- [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported) 
+- [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported)
   - A Receiver supporting `aspect_ratio_idc` values that are defined as `Reserved` in Table E-1 of the [H.264][] specification indicate, such the maximum value of `aspect_ratio_idc` using this Receiver Capability. The `sar-supported` attribute is an integer indicating the maximum value of `aspect_ratio_idc` smaller than 255 that the Receiver understands and support (sar-understood SHOULD be assumed to match sar-supported, both being defined in RFC 6184). The value of this parameter is an integer in the range of 1 to sar-understood, inclusive, equal to 255. The value of sar-supported equal to N smaller than 255 indicates that the receiver supports all the SARs corresponding to H.264 aspect_ratio_idc values (see Table E-1 of [H.264][]) in the range from 1 to N, inclusive, without geometric distortion.  The value of sar-supported equal to 255 indicates that the receiver supports all sample aspect ratios that are expressible using two 16-bit integer values as the numerator and denominator, i.e., those that are expressible using the H.264 aspect_ratio_idc value of 255 (Extended_SAR, see Table E-1 of [H.264][]), without geometric distortion.
 
   - [ ] A Receiver supporting `aspect_ratio_idc` values that are defined as `Reserved` in Table E-1 of the [H.265][] specification indicate, such the maximum value of `aspect_ratio_idc` using this Receiver Capability. The `sar-supported` attribute is an integer indicating the maximum value of `aspect_ratio_idc` smaller than 255 that the Receiver understands and support (sar-understood SHOULD be assumed to match sar-supported, both being defined in RFC 6184 and such definitions reused for H.265 as they are not part of RFC 7798). The value of this parameter is an integer in the range of 1 to sar-understood, inclusive, equal to 255. The value of sar-supported equal to N smaller than 255 indicates that the receiver supports all the SARs corresponding to H.264 aspect_ratio_idc values (see Table E-1 of [H.265][]) in the range from 1 to N, inclusive, without geometric distortion.  The value of sar-supported equal to 255 indicates that the receiver supports all sample aspect ratios that are expressible using two 16-bit integer values as the numerator and denominator, i.e., those that are expressible using the H.264 aspect_ratio_idc value of 255 (Extended_SAR, see Table E-1 of [H.265][]), without geometric distortion.
 
-- [ ] TODO: Have a Sender property to indicate actual SAR which is based on Video Usability Information (VUI) parameter sets. If send out-of-band then a Controller has no visibility.
+- [ ] TODO: Have a Sender property to indicate actual SAR which is based on Video Usability Information (VUI) parameter sets. If send in-band then a Controller has no visibility. Another possibility is to indicate taht this constraint targets IS-11 API where a Controller can constraint a Sender without knowing the default configuration of the Sender (wihtout IS-11 constraint).
 
 When the H.264 decoder has no restrictions of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels need not be enumerated.
 
