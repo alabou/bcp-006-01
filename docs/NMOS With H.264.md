@@ -244,7 +244,7 @@ The H.264 encoder of a Sender MUST produces an H.264 bitstream that is compliant
 
 #### Parent Flows
 
-Flow resources can be associated with many Senders and many other Flows at the same time. A Flow resource may be the parent of many another Flow resources. A Sender associated with the child Flow of some parents H.264 Flows is assumed as having `parameter_sets_flow_mode` set to "multi" and `parameter_sets_transport_mode` set to "in-band" for all the parents H.264 bistreams flowing through the Sender.
+Flow resources can be associated with many Senders and many other Flows at the same time. A Flow resource may be the parent of many another Flow resources. A Sender associated with a Flow having some parents H.264 Flows may declare the `parameter_sets_flow_mode` and `parameter_sets_transport_mode` properties that apply for all the parents H.264 bistreams flowing through the Sender.
 
 ## H.264 IS-04 Receivers
 
@@ -328,6 +328,10 @@ Other existing parameter constraints, such as the following, are also appropriat
 An example Receiver resource is provided in the [Examples](../examples/).
 
 A Receiver MUST be able to decode a bitstream conforming to the profiles and levels declared in the Receiver Capabilities or the implied default value of such capabilities. A Receiver may have preferences and more optimal profiles and levels that may be declared through Receiver Capabilities. A preferred constraint set MAY indicate such preferences while another constraint set MAY indicate full support of some profiles and levels. A Receiver MAY further constraint the support of a coded bitstream compliant with a profile and level using other constraints in its Receiver Capabilities.
+
+#### Parent Flows
+
+Flow resources can be associated with many Senders and many other Flows at the same time. A Flow resource may be the parent of many another Flow resources. A Receiver consuming a stream whose Sender is associated with a Flow having some parents H.264 Flows may declare constraints that apply for all the parents H.264 bistreams flowing through the Sender.
 
 ## H.264 IS-05 Senders and Receivers
 
