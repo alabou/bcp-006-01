@@ -54,7 +54,7 @@ These attributes provide information for Controllers and Users to evaluate strea
   The Flow resource MUST indicate the color (sub-)sampling, width, height and depth of the associated uncompressed picture using the `components` attribute.
   The `components` array values MUST correspond to the stream's current active parameter set values. A Flow MUST track the stream's current active parameter set.
   
-  Informative note: ST 2110-22 does not require the `sampling` or `depth` SDP parameters. RFC 6184 does not define any such SDP parameters. The `sampling`, `width`, `heigh`t and `depth` of the associated uncompressed picture MUST be derived from the H.264 active parameter set by the Receiver. 
+  Informative note: ST 2110-22 does not require the `sampling` or `depth` SDP parameters. RFC 6184 does not define any such SDP parameters. The `sampling`, `width`, `height` and `depth` of the associated uncompressed picture MUST be derived from the H.264 active parameter set by the Receiver. 
   
   If a stream complies with other specifications in addition to RFC 6184 about the parameters declared in the "fmtp=" attribute of an SDP transport file, those parameters MUST comply with the stream's active parameter set.
   
@@ -68,7 +68,7 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "ConstrainedBaseline"
   - "Baseline" (Default if not specified in the SDP transport file) 
   - "Main"
-  - "Etended"
+  - "Extended"
   - "High"
   - "HighProgressive"
   - "ConstrainedHigh"
@@ -86,42 +86,42 @@ These attributes provide information for Controllers and Users to evaluate strea
   - [ ] The Flow resource MUST indicate the H.265 profile, which defines algorithmic features and limits that SHALL be supported by all decoders conforming to that profile. The Flow's `profile` attribute maps to the `profile-id` parameter of the SDP transport file which is OPTIONAL according to RFC 7798 and REQUIRED by this specification unless the `profile-id` parameter corresponds to the default value, in which case it MAY be omited. The `profile-space` parameter of the SDP transprot file SHALL be omited or alwyas be 0.
   The permitted `profile` values are strings, defined as per ITU-T Rec. H.265 Annex A
   
-  - Main (Default if not specified in the SDP transport file) 
-  - Main10 
-  - Main10Still 
-  - MainStill 
-  - Monochrome, 
-  - Monochrome10 
-  - Monochrome12 
-  - Monochrome16  
-  - Main12 
-  - Main10-422 
-  - Main12-422 
-  - Main444 
-  - Main10-444 
-  - Main12-444 
-  - MainIntra 
-  - Main10Intra 
-  - Main12Intra 
-  - Main10Intra-422 
-  - Main12Intra-422 
-  - MainIntra-444 
-  - Main10Intra-444 
-  - Main12Intra-444 
-  - Main16Intra-444 
-  - MainStill-444 
-  - Main16Still-444 
-  - HighThroughput-444 
-  - HighThroughput10-444 
-  - HighThroughput14-444 
-  - HighThroughput16Intra-444 
-  - ScreenExtendedMain 
-  - ScreenExtendedMain10 
-  - ScreenExtendedMain-444 
-  - ScreenExtendedMain10-444 
-  - ScreenExtendedHighThroughput-444 
-  - ScreenExtendedHighThroughput10-444 
-  - ScreenExtendedHighThroughput14-444 
+  - "Main" (Default if not specified in the SDP transport file) 
+  - "Main10" 
+  - "Main10Still"
+  - "MainStill"
+  - "Monochrome" 
+  - "Monochrome10"
+  - "Monochrome12"
+  - "Monochrome16" 
+  - "Main12"
+  - "Main10-422"
+  - "Main12-422"
+  - "Main444"
+  - "Main10-444"
+  - "Main12-444"
+  - "MainIntra"
+  - "Main10Intra"
+  - "Main12Intra"
+  - "Main10Intra-422"
+  - "Main12Intra-422"
+  - "MainIntra-444"
+  - "Main10Intra-444"
+  - "Main12Intra-444"
+  - "Main16Intra-444"
+  - "MainStill-444"
+  - "Main16Still-444"
+  - "HighThroughput-444"
+  - "HighThroughput10-444"
+  - "HighThroughput14-444"
+  - "HighThroughput16Intra-444"
+  - "ScreenExtendedMain"
+  - "ScreenExtendedMain10"
+  - "ScreenExtendedMain-444"
+  - "ScreenExtendedMain10-444"
+  - "ScreenExtendedHighThroughput-444"
+  - "ScreenExtendedHighThroughput10-444"
+  - "ScreenExtendedHighThroughput14-444"
   
   - [ ] Informative note: The Flow's `profile` attribute is always required. It is the SDP transport file `profile-id` parameter that may be omited when matching the default value.
   
@@ -254,28 +254,26 @@ Nodes capable of receiving H.264 video streams MUST have a Receiver resource in 
 
 This has been permitted since IS-04 v1.1.
 
-If the Receiver has limitations or preferences on the H.264 video streams that it supports, the Receiver resource MUST indicate constraints in accordance with the [BCP-004-01][] Receiver Capabilities specification.
+If the Receiver has limitations or preferences on the H.264 video streams that it supports, the Receiver resource MUST indicate constraints in accordance with the [BCP-004-01][] Receiver Capabilities specification. The Receiver SHOULD express its constraints as precisely as possible, describing its common operating points and any preferences among them, to allow a Controller to determine with a high level of confidence the interoperability with H.264 streams.
 
-- [ ] If the Receiver has limitations or preferences on the H.265 video streams that it supports, the Receiver resource MUST indicate constraints in accordance with the [BCP-004-01][] Receiver Capabilities specification.
+- [ ] If the Receiver has limitations or preferences on the H.265 video streams that it supports, the Receiver resource MUST indicate constraints in accordance with the [BCP-004-01][] Receiver Capabilities specification. The Receiver SHOULD express its constraints as precisely as possible, describing its common operating points and any preferences among them, to allow a Controller to determine with a high level of confidence the interoperability with H.265 streams.
 
 The `constraint_sets` parameter within the `caps` object can be used to describe combinations of frame rates, width and height, and other parameters which the receiver can support, using the parameter constraints defined in the [Capabilities register](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/) of the NMOS Parameter Registers.
 
 The following parameter constraints can be used to express limits or preferences specifically defined by Rec. ITU-T H.264 and RFC 6184 for H.264 decoders:
 
 - [Profile](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#profile)
-  - Some H.264 profiles are superset of other profiles. From the point of view of Receiver Capabilities such superset profile is assumed to also correspond to the associated subset profiles such that Receiver Capabilities does not have to include the subset profiles. The H.264 specification describe the relationship among the profiles. To assist a Controller not having knowledge of the H.264 profiles relationship, the Receiver Capabilities MAY also enumerate all the subset profiles. If a Receiver does not indicate a `profile` constraint it is assumed as supporting the "Baseline" profile.
+  - Some H.264 profiles are superset of other profiles. The H.264 specification describe the relationship among the profiles. From the point of view of the H.264 specification, supporting such superset profile is required to also be supporting the associated subset profiles. To assist a Controller not having knowledge of the H.264 profiles relationship, the Receiver Capabilities SHOULD enumerate all the subset profiles in addition to the superset profile.
 
-  - [ ] Some H.265 profiles are superset of other profiles. From the point of view of Receiver Capabilities such superset profile is assumed to also correspond to the associated subset profiles such that Receiver Capabilities does not have to include the subset profiles. The H.265 specification describe the relationship among the profiles. To assist a Controller not having knowledge of the H.265 profiles relationship, the Receiver Capabilities MAY also enumerate all the subset profiles. If a Receiver does not indicate a `profile` constraint it is assumed as supporting the "Main" profile.
+  - [ ] Some H.265 profiles are superset of other profiles. The H.265 specification describe the relationship among the profiles. From the point of view of the H.265 specification, supporting such superset profile is required to also be supporting the associated subset profiles. To assist a Controller not having knowledge of the H.265 profiles relationship, the Receiver Capabilities SHOULD enumerate all the subset profiles in addition to the superset profile.
 
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#level)
-  - Some H.264 levels are superset of other levels. From the point of view of Receiver Capabilities such superset level is assumed to also correspond to the associated subset levels such that Receiver Capabilities does not have to include the subset level. The H.264 specification describe the relationship among the levels. To assist a Controller not having knowledge of the H.264 levels relationship, the Receiver Capabilities MAY also enumerate all the subset levels. If a Receiver does not indicate a `level` constraint it is assumed as supporting level "1".
-  - [ ] Some H.265 levels are superset of other levels. From the point of view of Receiver Capabilities such superset level is assumed to also correspond to the associated subset levels such that Receiver Capabilities does not have to include the subset level. The H.265 specification describe the relationship among the levels.  To assist a Controller not having knowledge of the H.265 levels relationship, the Receiver Capabilities MAY also enumerate all the subset levels. If a Receiver does not indicate a `level` constraint it is assumed as supporting level "3.1".
-
-- [ ] Note to Controllers: A Controller MUST know about the normative text of this specification and the associated H.264/H.265 specifications in order to properly handle the Receiver Capabilities because of the profile and level relatioship. Otherwise it required to fully declare all the supported profiles and levels which is too verbose.
+  - Some H.264 levels are superset of other profiles. The H.264 specification describe the relationship among the levels. From the point of view of the H.264 specification, supporting such superset level is required to also be supporting the associated subset levels. To assist a Controller not having knowledge of the H.264 levels relationship, the Receiver Capabilities SHOULD enumerate all the subset levsls in addition to the superset level.
+ 
+  - [ ] Some H.265 levels are superset of other profiles. The H.265 specification describe the relationship among the levels. From the point of view of the H.265 specification, supporting such superset level is required to also be supporting the associated subset levels. To assist a Controller not having knowledge of the H.265 levels relationship, the Receiver Capabilities SHOULD enumerate all the subset levsls in addition to the superset level.
 
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#packet-transmission-mode)
-  - Only one mode MUST be specified.  If a Receiver does not indicate a `packet_transmission_mode` constraint it is assumed as supporting "single_nal_unit" mode.
-  - Target the `packet_transmission_mode` property of the Sender.
+  - [ ] Target the `packet_transmission_mode` property of the Sender.
 
 - [Parameter Sets Flow Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
 
@@ -287,7 +285,6 @@ The following parameter constraints can be used to express limits or preferences
   - [ ] A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using one and/or multiple active parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.265 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profileid`, `level-id` and `tier-flag` parameters of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-vps`, `sprop-sps` and `sprop-pps` attributes of an SDP transport file, in-band through the H.265 bitstream or in-and-out-of-band usign both mechanisms.See the "Parameter Sets" section for more details.
 
   - A Receiver supporting the "dynamic" mode MUST also support the "static" mode. Such Receiver MUST have both "static" and "dynamic" values enumerated in the Receiver Capability in order to allow Senders operating in any parameter_sets_flow_mode.
-  - [ ] TODO: Should it be better to simply define here that dynamic included static and have the Controller operate based on that?
 
 - [ ] TODO: describe that a Sender always has the ability to switch the active parameter set independently of this capability (unless constrained by IS-11). A Receiver not supporting the dynamic-Flows capability would fail a PATCH if more than one parameter sets is provided in the SDP transport file. It would become inactive if the active parameter set change during decoding.
 
@@ -299,7 +296,6 @@ The following parameter constraints can be used to express limits or preferences
   - A Receiver declares the `parameter_sets_transport_mode` capability to indicate that it supports bitstreams producing in-band parameter sets that update or augment the initial out-of-band parameter sets. If declaring "in-band" or "in-and-out-of-band" capabilities a Receiver SHALL be capable of decoding in-band parameter sets and behave according to its capabilities if those are not duplicate of the original out-of-band parameter sets.
 
  - A Receiver supporting "in-and-out-of-band" MUST also support "in-band" and "out-of-band" and SHOULD have all values "in-band", "out-of-band" and "in-and-out-of-band" in the enum Receiver Capability in order to allow Senders operating in any parameter_sets_transport_mode.
-   - [ ] TODO: Should it be better to simply define here that in-and-out-of-band included in-band and out-of-band and have the Controller operate based on that?
 
 - [ ] TODO: describe that a Sender always has the ability to send in-band parameter sets independently of this capability (unless constrained by IS-11). A Receiver not supporting the in-band capability would become inactive if in-band parameter sets do not match the out-of-band ones.
 
@@ -308,11 +304,11 @@ The following parameter constraints can be used to express limits or preferences
 
   - [ ] A Receiver supporting `aspect_ratio_idc` values that are defined as `Reserved` in Table E-1 of the [H.265][] specification indicate, such the maximum value of `aspect_ratio_idc` using this Receiver Capability. The `sar-supported` attribute is an integer indicating the maximum value of `aspect_ratio_idc` smaller than 255 that the Receiver understands and support (sar-understood SHOULD be assumed to match sar-supported, both being defined in RFC 6184 and such definitions reused for H.265 as they are not part of RFC 7798). The value of this parameter is an integer in the range of 1 to sar-understood, inclusive, equal to 255. The value of sar-supported equal to N smaller than 255 indicates that the receiver supports all the SARs corresponding to H.264 aspect_ratio_idc values (see Table E-1 of [H.265][]) in the range from 1 to N, inclusive, without geometric distortion.  The value of sar-supported equal to 255 indicates that the receiver supports all sample aspect ratios that are expressible using two 16-bit integer values as the numerator and denominator, i.e., those that are expressible using the H.264 aspect_ratio_idc value of 255 (Extended_SAR, see Table E-1 of [H.265][]), without geometric distortion.
 
-- [ ] TODO: Have a Sender property to indicate actual SAR which is based on Video Usability Information (VUI) parameter sets. If send in-band then a Controller has no visibility. Another possibility is to indicate taht this constraint targets IS-11 API where a Controller can constraint a Sender without knowing the default configuration of the Sender (wihtout IS-11 constraint).
+- [ ] TODO: Have a Sender property to indicate actual SAR which is based on Video Usability Information (VUI) parameter sets. If send in-band then a Controller has no visibility. Another possibility is to indicate that this constraint targets the IS-11 API where a Controller can constraint a Sender without knowing the default configuration of the Sender (wihtout IS-11 constraint).
 
-When the H.264 decoder has no restrictions of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels need not be enumerated.
+When the H.264 decoder has no restrictions of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels SHOULD be enumerated.
 
-- [ ] When the H.265 decoder has no restrictions of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels need not be enumerated.
+- [ ] When the H.265 decoder has no restrictions of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels SHOULD be enumerated.
 
 Other existing parameter constraints, such as the following, are also appropriate to express limitations on supported H.264 video streams:
 
@@ -327,7 +323,7 @@ Other existing parameter constraints, such as the following, are also appropriat
 
 An example Receiver resource is provided in the [Examples](../examples/).
 
-A Receiver MUST be able to decode a bitstream conforming to the profiles and levels declared in the Receiver Capabilities or the implied default value of such capabilities. A Receiver may have preferences and more optimal profiles and levels that may be declared through Receiver Capabilities. A preferred constraint set MAY indicate such preferences while another constraint set MAY indicate full support of some profiles and levels. A Receiver MAY further constraint the support of a coded bitstream compliant with a profile and level using other constraints in its Receiver Capabilities.
+A Receiver MUST be able to decode a bitstream conforming to the profiles and levels declared in the Receiver Capabilities. A Receiver may have preferences and more optimal profiles and levels that may be declared through Receiver Capabilities. A preferred constraint set MAY indicate such preferences while another constraint set MAY indicate full support of some profiles and levels. A Receiver MAY further constraint the support of a coded bitstream compliant with a profile and level using other constraints in its Receiver Capabilities.
 
 #### Parent Flows
 
