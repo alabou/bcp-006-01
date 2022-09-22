@@ -6,8 +6,11 @@
 
 _(c) AMWA 2021, CC Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)_
 
-H.264 is a technology standardized in Rec. [ITU-T H.264][H.264] | ISO/IEC 14496-10 for video contribution at high compression rate and video quality.
+H.264 is a technology standardized in Rec. [ITU-T H.264][H.264] | ISO/IEC 14496 for video contribution at high compression rate and video quality.
 A companion RTP payload format specification was developed through the IETF Payloads working group, IETF [RFC 6184][RFC-6184].
+
+- [ ] H.265 is a technology standardized in Rec. [ITU-T H.265][H.265] | ISO/IEC 23008 for video contribution at high compression rate and video quality.
+A companion RTP payload format specification was developed through the IETF Payloads working group, IETF [RFC 7798][RFC-7798].
 
 The [Video Services Forum][VSF] developed Technical Recommendation [TR-??][] and [TR-??][] of the IPMX suite of protocols, which cover the end-to-end application use of constant and variable bitrate compression for video, using the SMPTE ST 2110 and IPMX suite of protocols.
 TR-?? and TR-?? mandate the use of the AMWA [IS-04][] and [IS-05][] NMOS Specifications in IPMX compliant systems.  
@@ -27,7 +30,7 @@ and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119]
 
 ## Definitions
 
-The NMOS terms 'Node', 'Source', 'Flow', 'Sender', 'Receiver' are used as defined in the [NMOS Glossary](https://specs.amwa.tv/nmos/main/docs/Glossary.html).
+The NMOS terms 'Controller', 'Node', 'Source', 'Flow', 'Sender', 'Receiver' are used as defined in the [NMOS Glossary](https://specs.amwa.tv/nmos/main/docs/Glossary.html).
 
 ## H.264 IS-04 Sources, Flows and Senders
 
@@ -168,7 +171,9 @@ An example Flow resource is provided in the [Examples](../examples/).
 
 #### RTP based transport
 
-The Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. 
+For Nodes transmitting H.264 using the RTP payload mapping defined by RFC 6184, the Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. 
+
+- [ ] For Nodes transmitting H.265 using the RTP payload mapping defined by RFC 7798, the Sender resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. 
 
 Sender resources provide no indication of media type or format, since this is described by the associated Flow resource.
 
@@ -194,12 +199,12 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
 - [ ] MUST changed for SHOULD as RFC 6184 does not have a "b=" SDP attribute and future ST 2110-?? for VBR will likely not have a requried "b=" attribute. Transport of H.264 / H.265 streams should probably not be using ST 2110-22 in order to remove the requirement to have the "b=" attribute. For H.264 and H/265 coded streams there are elements of the bitstream describing the encoding bitrate properties. A receiver should from its knowledge of the transport derive an estimate of the transport bit-rate.
   
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#packet-transmission-mode)  
-  If the Sender is using the non-interleaved or interleaved packetization modes, it MUST include the `packet_transmission_mode` attribute and set it to either `non_interleaved_nal_units` or `interleaved_nal_units`. The `packet_transmission_mode` attribute maps the the RFC 6184 `packetization-mode` parameter with `single_nal_unit` corresponding to value 0, `non_interleaved_nal_units` to value 1 and `interleaved_nal_units` to value 2.
-  Since the default value of this attribute is `single_nal_unit`, the Sender MAY omit this attribute when using that mode. When the `packet-transmission-mode` attribute is included, the associated `packetization-mode` parameter of the SDP transport file MUST also be included.
+  If the Sender is using the non-interleaved or interleaved packetization modes, it MUST include the `packet_transmission_mode` attribute and set it to either `non_interleaved_nal_units` or `interleaved_nal_units`. The `packet_transmission_mode` attribute maps the the RFC 6184 `packetization-mode` parameter with `single_nal_unit` corresponding to value 0, `non_interleaved_nal_units` to value 1 and `interleaved_nal_units` to value 2. Since the default value of this attribute is `single_nal_unit`, the Sender MAY omit this attribute when using that mode. When the `packet-transmission-mode` attribute is included, the associated `packetization-mode` parameter of the SDP transport file MUST also be included.
+  
   Parameters related to the `interleaved_nal_units` mode SHOULD be included in the SDP transport file unless their default value is used.
 
-- [ ] If the Sender is using the non-interleaved mode, it MUST include the `packet_transmission_mode` attribute and set it to `interleaved_nal_units`. The `packet_transmission_mode` attribute maps the the RFC 7798 `sprop-max-don-diff` parameter with `non_interleaved_nal_units` corresponding to value 0, `interleaved_nal_units` to value greater than 0.
-  Since the default value of this attribute is `non_interleaved_nal_units`, the Sender MAY omit this attribute when using that mode. When the `packet-transmission-mode` attribute is included, the associated `sprop-max-don-diff` parameter of the SDP transport file MUST also be included.
+- [ ] If the Sender is using the non-interleaved mode, it MUST include the `packet_transmission_mode` attribute and set it to `interleaved_nal_units`. The `packet_transmission_mode` attribute maps the the RFC 7798 `sprop-max-don-diff` parameter with `non_interleaved_nal_units` corresponding to value 0, `interleaved_nal_units` to value greater than 0. Since the default value of this attribute is `non_interleaved_nal_units`, the Sender MAY omit this attribute when using that mode. When the `packet-transmission-mode` attribute is included, the associated `sprop-max-don-diff` parameter of the SDP transport file MUST also be included.
+
   Parameters related to the `interleaved_nal_units` mode SHOULD be included in the SDP transport file unless their default value is used.
 
 - [ST 2110-21 Sender Type](https://specs.amwa.tv/nmos-parameter-registers/branches/main/sender-attributes/#st-2110-21-sender-type)  
@@ -329,6 +334,16 @@ A Receiver MUST be able to decode a bitstream conforming to the profiles and lev
 
 Flow resources can be associated with many Senders and many other Flows at the same time. A Flow resource may be the parent of many another Flow resources. A Receiver consuming a stream whose Sender is associated with a Flow having some parents H.264 Flows may declare constraints that apply for all the parents H.264 bistreams flowing through the Sender.
 
+#### RTP based transport
+
+For Nodes consuming H.264 using the RTP payload mapping defined by RFC 6184, the Receiver resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. 
+
+- [ ] For Nodes consuming H.265 using the RTP payload mapping defined by RFC 7798, the Receiver resource MUST indicate `urn:x-nmos:transport:rtp` or one of its subclassifications for the `transport` attribute. 
+
+#### Other transport
+
+The Receiver resource MUST indicate the associated `urn:x-nmos:transport:` label of the transport or one of its subclassifications for the `transport` attribute. 
+
 ## H.264 IS-05 Senders and Receivers
 
 ### RTP transport
@@ -373,6 +388,11 @@ A Sender is allowed, unless constrained by IS-11, to produces H.264 coded stream
 - [ ] Note to ST 2110-22: An H.264 stream will not be able to fully benefit from the seamless transitions of parameter sets because of the attributes width, height and exactframerate that are part of the SDP transport file are not allowed to change. 
 - [ ] Note to IPMX: An IPMX H.264 stream will not be able to benefit from the seamless transitions of parameter sets because of the attributes measuredpixclk, htotal and vtotal that are part of the SDP transport file are not allowed to change and cannot be inferred from the parameter sets. 
 
+## Controllers
+
+Controllers MUST support the BCP-004-01 Receiver Capabilities mechanism and all the parameter constraints listed in this specification in order to evaluate the stream compatibility between H.264 Senders and Receivers.
+
+- [ ] Controllers MUST support the BCP-004-01 Receiver Capabilities mechanism and all the parameter constraints listed in this specification in order to evaluate the stream compatibility between H.265 Senders and Receivers.
 
 [BCP-004-01]: https://specs.amwa.tv/bcp-004-01/ "AMWA BCP-004-01 NMOS Receiver Capabilities"
 [H.264]: https://www.itu.int/rec/T-REC-H.264/ " Advanced video coding for generic audiovisual services"
