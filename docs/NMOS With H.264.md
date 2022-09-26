@@ -179,11 +179,11 @@ Sender resources provide no indication of media type or format, since this is de
 
 The SDP file at the `manifest_href` MUST comply with the requirements of RFC 6184 in the [Usage in Declarative Session Descriptions](https://datatracker.ietf.org/doc/html/rfc6184#section-8.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 6184 is not supported. The `fmtp` source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported.
 
-Additionally, the format-specific parameters defined by RFC 6184 corresponding to REQUIRED Flow attributes, as per the IS-04 JSON schemas, are made REQUIRED and MUST be included, in order that the information provided to an NMOS Controller through a Flow is also provided to a Receiver through the SDP file.
+Additionally, in order to provide to a Receiver, through SDP file format-specific parameters, the information provided to an NMOS Controller through REQUIRED Flow attributes, format-specific parameters defined by RFC 6184 are made REQUIRED in the same circumstances that corresponding Flow attributes are made REQUIRED by IS-04 JSON schemas or this specification
 
 - [ ] The SDP file at the `manifest_href` MUST comply with the requirements of RFC 7798 in the [Usage in Declarative Session Descriptions](https://www.rfc-editor.org/rfc/rfc7798.html#section-7.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 7798 is not supported. The `fmtp` source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported. The `tx-mode` parmeter of the SDP transport file SHALL always be set to SRST (Single RTP Stream Transport).
 
-Additionally, the format-specific parameters defined by RFC 7798 corresponding to REQUIRED Flow attributes, as per the IS-04 JSON schemas, are made REQUIRED and MUST be included, in order that the information provided to an NMOS Controller through a Flow is also provided to a Receiver through the SDP file.
+- [ ] Additionally, in order to provide to a Receiver, through SDP file format-specific parameters, the information provided to an NMOS Controller through REQUIRED Flow attributes, format-specific parameters defined by RFC 7798 are made REQUIRED in the same circumstances that corresponding Flow attributes are made REQUIRED by IS-04 JSON schemas or this specification
 
 If the Sender meets the traffic shaping and delivery timing requirements specified for ST 2110-22, the SDP file MUST also comply with the provisions of ST 2110-22.
 
