@@ -181,10 +181,16 @@ The SDP file at the `manifest_href` MUST comply with the requirements of RFC 618
 
 Additionally, in order to provide to a Receiver, through SDP file format-specific parameters, the information provided to an NMOS Controller through REQUIRED Flow attributes, format-specific parameters defined by RFC 6184 are made REQUIRED in the same circumstances that corresponding Flow attributes are made REQUIRED by IS-04 JSON schemas or this specification
 
+  - The `profile-level-id` format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
+  - The `sprop-parameter-sets` MUST always be included if the Sender `parameter_sets_transport_mode` property is "in-band" or "in-and-out-of-band".
+
 - [ ] The SDP file at the `manifest_href` MUST comply with the requirements of RFC 7798 in the [Usage in Declarative Session Descriptions](https://www.rfc-editor.org/rfc/rfc7798.html#section-7.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 7798 is not supported. The `fmtp` source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported. The `tx-mode` parmeter of the SDP transport file SHALL always be set to SRST (Single RTP Stream Transport).
 
 - [ ] Additionally, in order to provide to a Receiver, through SDP file format-specific parameters, the information provided to an NMOS Controller through REQUIRED Flow attributes, format-specific parameters defined by RFC 7798 are made REQUIRED in the same circumstances that corresponding Flow attributes are made REQUIRED by IS-04 JSON schemas or this specification
 
+  - The `profile-id`, `level-id` and `tier-flag`format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
+  - The`sprop-vps`, `sprop-sps` and `sprop-pps` MUST always be included if the Sender `parameter_sets_transport_mode` property is "in-band" or "in-and-out-of-band".
+  
 If the Sender meets the traffic shaping and delivery timing requirements specified for ST 2110-22, the SDP file MUST also comply with the provisions of ST 2110-22.
 
 For Nodes implementing IS-04 v1.3 or higher, the following additional requirements on the Sender resource apply.
@@ -233,7 +239,9 @@ The H.264 encoder of a Sender MUST produces an H.264 bitstream that is compliant
 
 #### Other transports
 
-The Sender resource MUST indicate the associated `urn:x-nmos:transport:` label of the transport or one of its subclassifications for the `transport` attribute. 
+For Nodes transmitting H.264 using other transports, the Sender resource MUST indicate the associated `urn:x-nmos:transport:` label of the transport or one of its subclassifications for the `transport` attribute.
+
+- [ ] For Nodes transmitting H.265 using other transports, the Sender resource MUST indicate the associated `urn:x-nmos:transport:` label of the transport or one of its subclassifications for the `transport` attribute. 
 
 Sender resources provide no indication of media type or format, since this is described by the associated Flow resource.
 
@@ -291,7 +299,7 @@ The following parameter constraints can be used to express limits or preferences
 
   - A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using one and/or multiple active parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.264 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profile-level-id` parameter of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-parameter-sets` attribute of an SDP transport file, in-band through the H.264 bitstream or in-and-out-of-band usign both mechanisms. See the "Parameter Sets" section for more details.
  
-  - [ ] A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using one and/or multiple active parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.265 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profileid`, `level-id` and `tier-flag` parameters of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-vps`, `sprop-sps` and `sprop-pps` attributes of an SDP transport file, in-band through the H.265 bitstream or in-and-out-of-band usign both mechanisms.See the "Parameter Sets" section for more details.
+  - [ ] A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using one and/or multiple active parameter sets. As each active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable of decoding an H.265 bitstream where the associated Flow changes dynamically. All the parameter sets comply with the `profile-id`, `level-id` and `tier-flag` parameters of the stream's associated SDP transport file. The parameter sets may be specified out-of-band using the `sprop-vps`, `sprop-sps` and `sprop-pps` attributes of an SDP transport file, in-band through the H.265 bitstream or in-and-out-of-band usign both mechanisms.See the "Parameter Sets" section for more details.
 
   - A Receiver supporting the "dynamic" mode MUST also support the "static" mode. Such Receiver MUST have both "static" and "dynamic" values enumerated in the Receiver Capability in order to allow Senders operating in any parameter_sets_flow_mode.
 
@@ -353,11 +361,15 @@ The Receiver resource MUST indicate the associated `urn:x-nmos:transport:` label
 ### RTP transport
 
 Connection Management using IS-05 proceeds in exactly the same manner as for any other stream format carried within RTP.
-The SDP file at the **/transportfile** endpoint on Senders MUST comply with the requirements of RFC 6184 and, if appropriate, ST 2110-22.
+The SDP file at the **/transportfile** endpoint on Senders MUST comply with the same requirements described for the SDP transport file at the IS-04 Sender `manifest_href`.
 
 An SDP file provided in the `transport_file` attribute of a `PATCH` request on the **/staged** endpoint of Receivers MUST also comply with RFC 6184 and, if appropriate, ST 2110-22.
 
-- [ ] An SDP file provided in the `transport_file` attribute of a `PATCH` request on the **/staged** endpoint of Receivers MUST also comply with RFC 7798 and, if appropriate, ST 2110-22.
+Informative Note: Receivers MUST handle SDP transport files may not comply with the additional requirements described for Senders. Only RFC 6184 and, if appropriate, ST 2110-22 compliance is required
+
+- [ ] An SDP file provided in the `transport_file` attribute of a `PATCH` request on the **/staged** endpoint of Receivers MUST also comply with RFC 7798 and, if appropriate, ST 2110-22. 
+
+- [ ] Informative Note: Receivers MUST handle SDP transport files may not comply with the additional requirements described for Senders. Only RFC 7798 and, if appropriate, ST 2110-22 compliance is required.
 
 An example SDP file is provided in the [Examples](../examples/).
 
