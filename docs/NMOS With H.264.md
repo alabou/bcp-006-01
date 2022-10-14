@@ -179,18 +179,20 @@ Sender resources provide no indication of media type or format, since this is de
 
 The SDP file at the `manifest_href` MUST comply with the requirements of RFC 6184 in the [Usage in Declarative Session Descriptions](https://datatracker.ietf.org/doc/html/rfc6184#section-8.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 6184 is not supported. The `fmtp` source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported.
 
-Additionally, in order to provide to a Receiver, through SDP file format-specific parameters, the information provided to an NMOS Controller through REQUIRED Flow attributes, format-specific parameters defined by RFC 6184 are made REQUIRED in the same circumstances that corresponding Flow attributes are made REQUIRED by IS-04 JSON schemas or this specification
+Additionally, the SDP file needs to convey, so far as the defined parameters allow, the same information about the stream as conveyed by the Source, Flow and Sender attributes defined by this specification and IS-04.
 
+Therefore:
   - The `profile-level-id` format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
   - The `sprop-parameter-sets` MUST always be included if the Sender `parameter_sets_transport_mode` property is "in-band" or "in-and-out-of-band".
 
 - [ ] The SDP file at the `manifest_href` MUST comply with the requirements of RFC 7798 in the [Usage in Declarative Session Descriptions](https://www.rfc-editor.org/rfc/rfc7798.html#section-7.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 7798 is not supported. The `fmtp` source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported. The `tx-mode` parmeter of the SDP transport file SHALL always be set to SRST (Single RTP Stream Transport).
 
-- [ ] Additionally, in order to provide to a Receiver, through SDP file format-specific parameters, the information provided to an NMOS Controller through REQUIRED Flow attributes, format-specific parameters defined by RFC 7798 are made REQUIRED in the same circumstances that corresponding Flow attributes are made REQUIRED by IS-04 JSON schemas or this specification
+- [ ] Additionally, the SDP file needs to convey, so far as the defined parameters allow, the same information about the stream as conveyed by the Source, Flow and Sender attributes defined by this specification and IS-04.
 
+Therefore:
   - The `profile-id`, `level-id` and `tier-flag`format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
   - The`sprop-vps`, `sprop-sps` and `sprop-pps` MUST always be included if the Sender `parameter_sets_transport_mode` property is "in-band" or "in-and-out-of-band".
-  
+
 If the Sender meets the traffic shaping and delivery timing requirements specified for ST 2110-22, the SDP file MUST also comply with the provisions of ST 2110-22.
 
 For Nodes implementing IS-04 v1.3 or higher, the following additional requirements on the Sender resource apply.
@@ -361,15 +363,14 @@ The Receiver resource MUST indicate the associated `urn:x-nmos:transport:` label
 ### RTP transport
 
 Connection Management using IS-05 proceeds in exactly the same manner as for any other stream format carried within RTP.
-The SDP file at the **/transportfile** endpoint on Senders MUST comply with the same requirements described for the SDP transport file at the IS-04 Sender `manifest_href`.
 
-An SDP file provided in the `transport_file` attribute of a `PATCH` request on the **/staged** endpoint of Receivers MUST also comply with RFC 6184 and, if appropriate, ST 2110-22.
+The SDP file at the **/transportfile** endpoint on an IS-05 Sender MUST comply with the same requirements described for the SDP file at the IS-04 Sender `manifest_href`.
 
-Informative Note: Receivers MUST handle SDP transport files may not comply with the additional requirements described for Senders. Only RFC 6184 and, if appropriate, ST 2110-22 compliance is required
+A `PATCH` request on the **/staged** endpoint of an IS-05 Receiver can contain an SDP file in the `transport_file` attribute. The SDP file for a H.264 stream is expected to comply with RFC 6184 and, if appropriate, ST 2110-22. It need not comply with the additional requirements specified for SDP files at Senders.
 
-- [ ] An SDP file provided in the `transport_file` attribute of a `PATCH` request on the **/staged** endpoint of Receivers MUST also comply with RFC 7798 and, if appropriate, ST 2110-22. 
+- [ ] A `PATCH` request on the **/staged** endpoint of an IS-05 Receiver can contain an SDP file in the `transport_file` attribute. The SDP file for a H.265 stream is expected to comply with RFC 7798 and, if appropriate, ST 2110-22. It need not comply with the additional requirements specified for SDP files at Senders. 
 
-- [ ] Informative Note: Receivers MUST handle SDP transport files may not comply with the additional requirements described for Senders. Only RFC 7798 and, if appropriate, ST 2110-22 compliance is required.
+If the Receiver is not capable of consuming the stream described by the SDP file, it SHOULD reject the request. If it is unable to assess the stream compatibility because some optional parameters are not included in the SDP transport file, it MAY accept the request and postpone stream compatibility assessment.
 
 An example SDP file is provided in the [Examples](../examples/).
 
