@@ -183,7 +183,7 @@ Additionally, the SDP file needs to convey, so far as the defined parameters all
 
 Therefore:
   - The `profile-level-id` format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
-  - The `sprop-parameter-sets` MUST always be included if the Sender `parameter_sets_transport_mode` property is "in-band" or "in-and-out-of-band".
+  - The `sprop-parameter-sets` MUST always be included if the Sender `parameter_sets_transport_mode` property is "out-of-band" or "in-and-out-of-band".
 
 - [ ] The SDP file at the `manifest_href` MUST comply with the requirements of RFC 7798 in the [Usage in Declarative Session Descriptions](https://www.rfc-editor.org/rfc/rfc7798.html#section-7.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 7798 is not supported. The `fmtp` source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported. The `tx-mode` parmeter of the SDP transport file SHALL always be set to SRST (Single RTP Stream Transport).
 
@@ -191,7 +191,7 @@ Therefore:
 
 Therefore:
   - The `profile-id`, `level-id` and `tier-flag`format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
-  - The`sprop-vps`, `sprop-sps` and `sprop-pps` MUST always be included if the Sender `parameter_sets_transport_mode` property is "in-band" or "in-and-out-of-band".
+  - The`sprop-vps`, `sprop-sps` and `sprop-pps` MUST always be included if the Sender `parameter_sets_transport_mode` property is "out-of-band" or "in-and-out-of-band".
 
 If the Sender meets the traffic shaping and delivery timing requirements specified for ST 2110-22, the SDP file MUST also comply with the provisions of ST 2110-22.
 
@@ -396,7 +396,11 @@ A Receiver MUST verify that the current active parameter set comply with the Rec
 
 The `parameter_sets_flow_mode` Receiver Capability indicates when set to "dynamic" that a Receiver supports decoding an H.264 stream where the active parameter set changes dynamically. 
 
-A Receiver with this capability set to "static" requires that a coded stream uses at most one active parameter set. Such active parameter set MAY be obtained out-of-band or in-band if the Receiver supports the `parameter_sets_transport_mode` Capability. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MUST contain only the active parameter set. When obtained in-band the `sprop-parameter-sets` parameter of an SDP transport file MUST be empty or omited and the Sender  transmits the active parameter set in-band. At all time, the Sender is allowed to transmit in-band parameter sets that are duplicates of the initial active parameter set obtained either out-of-band or in-band. Out-of-band parameter sets have priority over in-band paraemeters sets, so receiving the active parameter set out-of-band from the `sprop-parameter-sets` parameter does not allow further receiving in-band parameter sets that are not duplicates.
+A Receiver with this capability set to "static" requires that a coded stream uses at most one active parameter set. Such active parameter set MAY be obtained out-of-band or in-band if the Receiver supports the `parameter_sets_transport_mode` Capability. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MUST contain only the active parameter set. When obtained in-band the `sprop-parameter-sets` parameter of an SDP transport file MUST be empty or omited and the Sender transmits the active parameter set in-band. At all time, the Sender is allowed to transmit in-band parameter sets that are duplicates of the initial active parameter set obtained either out-of-band or in-band. Out-of-band parameter sets have priority over in-band paraemeters sets, so receiving the active parameter set out-of-band from the `sprop-parameter-sets` parameter does not allow further receiving in-band parameter sets that are not duplicates. 
+
+The "one active parameter set" rule allows a set of PPS to be used by the coded stream along with a single SPS. The relaxed rule allows for using various scaling-lists during the encoding.
+
+- [ ] The "one active parameter set" rule allows a set of PPS to be used by the coded stream along with a single SPS and VPS. The relaxed rule allows for using various scaling-lists during the encoding.
 
 A Receiver with this capability set to "dynamic" supports that a coded stream uses multiple active parameter sets. Such parameter sets MAY be obtained out-of-band and/or in-band according to the Receiver `parameter_sets_transport_mode` Capability. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MAY contain multiple initial parameter sets. When obtained in-band the Sender is allowed to transmit multiple in-band parameter sets to update parameter sets initially received out-of-band or to add and update new ones.
 
