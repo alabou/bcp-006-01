@@ -420,6 +420,7 @@ Controllers MUST support the BCP-004-01 Receiver Capabilities mechanism and all 
 [H.265]: https://www.itu.int/rec/T-REC-H.265/ " High efficiency video coding"
 [RFC-2119]: https://tools.ietf.org/html/rfc2119 "Key words for use in RFCs"
 [RFC-6184]: https://tools.ietf.org/html/rfc6184 "RTP Payload Format for H.264 Video"
+[RFC-7798]: https://tools.ietf.org/html/rfc7798 "RTP Payload Format for High Efficiency Video Coding (HEVC)"
 [IS-04]: https://specs.amwa.tv/is-04/ "AMWA IS-04 NMOS Discovery and Registration Specification"
 [IS-05]: https://specs.amwa.tv/is-05/ "AMWA IS-05 NMOS Device Connection Management Specification"
 [NMOS Parameter Registers]: https://specs.amwa.tv/nmos-parameter-registers/ "Common parameter values for AMWA NMOS Specifications"
