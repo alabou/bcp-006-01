@@ -216,7 +216,7 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
   
   Parameters related to the `interleaved_nal_units` mode SHOULD be included in the SDP transport file unless their default value is used.
 
-- [ ] If the Sender is using the non-interleaved mode, it MUST include the `packet_transmission_mode` attribute and set it to `interleaved_nal_units`. The `packet_transmission_mode` attribute maps the the RFC 7798 `sprop-max-don-diff` parameter with `non_interleaved_nal_units` corresponding to value 0, `interleaved_nal_units` to value greater than 0. Since the default value of this attribute is `non_interleaved_nal_units`, the Sender MAY omit this attribute when using that mode. When the `packet-transmission-mode` attribute is included, the associated `sprop-max-don-diff` parameter of the SDP transport file MUST also be included.
+- [ ] If the Sender is using the interleaved mode, it MUST include the `packet_transmission_mode` attribute and set it to `interleaved_nal_units`. The `packet_transmission_mode` attribute maps the the RFC 7798 `sprop-max-don-diff` parameter with `non_interleaved_nal_units` corresponding to value 0, `interleaved_nal_units` to value greater than 0. Since the default value of this attribute is `non_interleaved_nal_units`, the Sender MAY omit this attribute when using that mode. When the `packet-transmission-mode` attribute is included, the associated `sprop-max-don-diff` parameter of the SDP transport file MUST also be included.
 
   Parameters related to the `interleaved_nal_units` mode SHOULD be included in the SDP transport file unless their default value is used.
 
