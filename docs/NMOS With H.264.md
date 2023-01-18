@@ -248,7 +248,7 @@ For Nodes transmitting H.264 using other transports, the Sender resource MUST in
 
 Sender resources provide no indication of media type or format, since this is described by the associated Flow resource.
 
-The `manifest_href` attribute MAY be `null` if an SDP transport file is not supported for RTP based transports.
+The `manifest_href` attribute MAY be `null` if an SDP transport file is not supported by the transport. Otherwise the SDP transport file MUST comply the associated normative text of the "RTP based transport" section.
 
 - [Parameter Sets Flow Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
   - [ ] string enum possible values are: "static", "dynamic"
@@ -378,6 +378,8 @@ An example SDP file is provided in the [Examples](../examples/).
 ### Other transports
 
 Connection Management using IS-05 proceeds in exactly the same manner as for any other stream format carried by transport other than RTP.
+
+If an SDP transport file is supported by teh transport, the SDP file at the **/transportfile** endpoint on an IS-05 Sender MUST comply with the same requirements described for the SDP file at the IS-04 Sender `manifest_href`.
 
 ### Parameter Sets
 
