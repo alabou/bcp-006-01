@@ -184,6 +184,8 @@ Additionally, the SDP file needs to convey, so far as the defined parameters all
 
 Therefore:
   - The `profile-level-id` format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
+  - The `packetization-mode` format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
+  - The `sprop-interleaving-depth`, `sprop-deint-buf-req`, `sprop-init-buf-time` and `sprop-max-don-diff` format-specific parameters SHOULD be included with the correct value unless it corresponds to the default value if the `packetization-mode` equals one of the interleaved modes.
   - The `sprop-parameter-sets` MUST always be included if the Sender `parameter_sets_transport_mode` property is "out-of-band" or "in-and-out-of-band".
 
 - [ ] The SDP file at the `manifest_href` MUST comply with the requirements of RFC 7798 in the [Usage in Declarative Session Descriptions](https://www.rfc-editor.org/rfc/rfc7798.html#section-7.2.3) mode of operation. The SDP Offer/Answer Model described in RFC 7798 is not supported. The `fmtp` source attribute as specified in Section 6.3 of RFC 5576 (Source-Specific Media Attributes in the Session Description Protocol) is not supported. The `tx-mode` parmeter of the SDP transport file SHALL always be set to SRST (Single RTP Stream Transport).
@@ -191,7 +193,9 @@ Therefore:
 - [ ] Additionally, the SDP file needs to convey, so far as the defined parameters allow, the same information about the stream as conveyed by the Source, Flow and Sender attributes defined by this specification and IS-04.
 
 Therefore:
-  - The `profile-id`, `level-id` and `tier-flag`format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
+  - The `profile-id`, `level-id` and `tier-flag` format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
+  - The `sprop-max-don-diff` format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
+  - `sprop-depack-buf-nalus`, `sprop-depack-buf-bytes` format-specific parameters SHOULD be included with the correct value unless it corresponds to the default value if `sprop-max-don-diff` is not 0
   - The`sprop-vps`, `sprop-sps` and `sprop-pps` MUST always be included if the Sender `parameter_sets_transport_mode` property is "out-of-band" or "in-and-out-of-band".
 
 If the Sender meets the traffic shaping and delivery timing requirements specified for ST 2110-22, the SDP file MUST also comply with the provisions of ST 2110-22.
