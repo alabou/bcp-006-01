@@ -15,7 +15,7 @@ A companion RTP payload format specification was developed through the IETF Payl
 The [Video Services Forum][VSF] developed Technical Recommendation [TR-??][] and [TR-??][] of the IPMX suite of protocols, which cover the end-to-end application use of constant and variable bitrate compression for video, using the SMPTE ST 2110 and IPMX suite of protocols.
 TR-?? and TR-?? mandate the use of the AMWA [IS-04][] and [IS-05][] NMOS Specifications in IPMX compliant systems.  
 
-AMWA IS-04 and IS-05 already have support for RTP transport and can signal the media type `video/h264` as defined in RFC 6184.
+AMWA IS-04 and IS-05 already have support for RTP transport and can signal the media type `video/H264` as defined in RFC 6184.
 
 - [ ] TODO: Current ST-2110 suite of protocols only support constant bit-rate streams. An new protocol for variable bit-rate is required. How should we refer to this upcoming variable bit-rate specification?
     - The ST-2110 definition of constant bit rate is not compatible with compressed video style H.264/H.265 "The video compression or the packetization of the video compression shall produce a constant number of bytes per frame. The packetization shall produce a constant number of RTP packets per frame." CBR for H.264/H.265 does not mean constant number of bits per frame but in a time period ... Unless using intra only compression.
