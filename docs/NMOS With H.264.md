@@ -330,9 +330,9 @@ The following parameter constraints can be used to express limits or preferences
 
 - [ ] TODO: Have a Sender property to indicate actual SAR which is based on Video Usability Information (VUI) parameter sets. If sent in-band then a Controller has no visibility. Another possibility is to indicate that this constraint targets the IS-11 API where a Controller can constraint a Sender without knowing the default configuration of the Sender (wihtout IS-11 constraint).
 
-When the H.264 decoder has no restrictions of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels SHOULD be enumerated.
+When the H.264 decoder has no restrictions on the value of some parameter, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported values as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels SHOULD be enumerated.
 
-- [ ] When the H.265 decoder has no restrictions of profiles or levels, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported profiles and levels as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels SHOULD be enumerated.
+- [ ] When the H.265 decoder has no restrictions on the value of some parameter, the Receiver can indicate that the parameter is unconstrained, as described in BCP-004-01. Otherwise a Receiver can indicate the supported values as enumerated string constraints. When a profile/level is defined as a superset of other profiles/level, the subset profiles/levels SHOULD be enumerated.
 
 Other existing parameter constraints, such as the following, are also appropriate to express limitations on supported H.264 video streams:
 
