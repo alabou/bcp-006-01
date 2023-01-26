@@ -156,7 +156,8 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "High-3", "High-3.1" 
   - "High-4", "High-4.1" 
   - "High-5", "High-5.1", "High-5.2" 
-  - "High-6", "High-6.1", "High-6.2" 
+  - "High-6", "High-6.1", "High-6.2"
+  - "High-8.5"
 
   - [ ] Informative note: The Flow's `level` attribute is always required. It is the SDP transport file `level-id` and `tier-flag` parameters that MAY be omited when matching the default value.
 
