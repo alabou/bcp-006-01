@@ -194,7 +194,7 @@ Therefore:
 - [ ] Additionally, the SDP file needs to convey, so far as the defined parameters allow, the same information about the stream as conveyed by the Source, Flow and Sender attributes defined by this specification and IS-04.
 
 Therefore:
-  - The `profile-id`, `level-id` and `tier-flag` format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
+  - The `profile-space`, `profile-id`, `profile-compatibility-indicator`, `interop-constraints`, `level-id` and `tier-flag` format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
   - The `sprop-max-don-diff` format-specific parameters MUST be included with the correct value unless it corresponds to the default value.
   - `sprop-depack-buf-nalus`, `sprop-depack-buf-bytes` format-specific parameters SHOULD be included with the correct value unless it corresponds to the default value if `sprop-max-don-diff` is not 0
   - The`sprop-vps`, `sprop-sps` and `sprop-pps` MUST always be included if the Sender `parameter_sets_transport_mode` property is `out_of_band` or `in_and_out_of_band`.
