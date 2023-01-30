@@ -298,7 +298,8 @@ The following parameter constraints can be used to express limits or preferences
   - [ ] Some H.265 levels are superset of other profiles. The H.265 specification describe the relationship among the levels. From the point of view of the H.265 specification, supporting such superset level is required to also be supporting the associated subset levels. To assist a Controller not having knowledge of the H.265 levels relationship, the Receiver Capabilities SHOULD enumerate all the subset levels in addition to the superset level.
 
 - [Packet Transmission Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#packet-transmission-mode)
-  - [ ] Target the `packet_transmission_mode` property of the Sender.
+  - [ ] Target the `packet_transmission_mode` property of the Sender. 
+  - RFC 6184 require the `single_nal_unit` packetization mode to be supported by all the H.264 Receivers. As such a constrained Receiver SHALL have a `packet_transmission_mode` capability with an enumerated value containing the value "single_nal_unit" and optionally it MAY also contain the values "non_interleaved_nal_units" and "interleaved_nal_units".
 
 - [Parameter Sets Flow Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
 
