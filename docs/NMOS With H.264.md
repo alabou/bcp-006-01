@@ -231,7 +231,7 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
 
 - [Parameter Sets Flow Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
   - [ ] string enum possible values are: "static", "dynamic"
-  - If a Sender operates in the static-Flow mode it MUST set the `parameter_sets_flow_mode` property to "static". Othersise it MAY omit or set the `parameter_sets_flow_mode` property to "dynamic". If unspecified the default value is "dynamic". See the "Parameter Sets" section for more details.
+  - If a Sender operates in the static-Flow mode it MUST set the `parameter_sets_flow_mode` property to "static". Otherwise it MAY omit or set the `parameter_sets_flow_mode` property to "dynamic". If unspecified the default value is "dynamic". See the "Parameter Sets" section for more details.
 
 - [Parameter Sets Transport Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
   - [ ] string enum possible values are: "in_band", "out_of_band", "in_and_out_of_band"
@@ -257,7 +257,7 @@ The `manifest_href` attribute MAY be `null` if an SDP transport file is not supp
 
 - [Parameter Sets Flow Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-flow-mode)
   - [ ] string enum possible values are: "static", "dynamic"
-  - If a Sender operates in the static-Flow mode it MUST set the `parameter_sets_flow_mode` property to "static". Othersise it MAY omit or set the `parameter_sets_flow_mode` property to "dynamic". If unspecified the default value is "dynamic". See the description of the modes at the "IS-04 Receivers" section.
+  - If a Sender operates in the static-Flow mode it MUST set the `parameter_sets_flow_mode` property to "static". Otherwise it MAY omit or set the `parameter_sets_flow_mode` property to "dynamic". If unspecified the default value is "dynamic". See the description of the modes at the "IS-04 Receivers" section.
 
 - [Parameter Sets Transport Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
   - [ ] string enum possible values are: "in_band", "out_of_band", "in_and_out_of_band"
