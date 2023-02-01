@@ -86,8 +86,11 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "CAVLCIntra-444"
   
     Informative note: The Flow's `profile` attribute is always required. It is the SDP transport file `profile-level-id` parameter that MAY be omited when matching the default value.
+
+    Informative note: The value of `profile-level-id` corresponds to the members profile_idc, level_idc and constraint_set?_flag of the AVC_video_descriptor of an MPEG2-TS transport stream.
     
-  - [ ] The Flow resource MUST indicate the H.265 profile, which defines algorithmic features and limits that SHALL be supported by all decoders conforming to that profile. The Flow's `profile` attribute maps to the `profile-id` parameter of the SDP transport file which is OPTIONAL according to RFC 7798 and REQUIRED by this specification unless the `profile-id` parameter corresponds to the default value, in which case it MAY be omited. The `profile-space` parameter of the SDP transprot file SHALL be omited or alwyas be 0.
+  - [ ] The Flow resource MUST indicate the H.265 profile, which defines algorithmic features and limits that SHALL be supported by all decoders conforming to that profile. The Flow's `profile` attribute maps to the `profile-space`, `profile-id`, `profile-compatibility-indicator`, `interop-constraints` parameters of the SDP transport file which are OPTIONAL according to RFC 7798 and REQUIRED by this specification unless the `profile-id` parameter corresponds to the default value, in which case they MAY be omited. 
+
   The permitted `profile` values are strings, defined as per ITU-T Rec. H.265 Annex A
   
   - "Main" (Default if not specified in the SDP transport file) 
@@ -127,8 +130,10 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "ScreenExtendedHighThroughput10-444"
   - "ScreenExtendedHighThroughput14-444"
   
-  - [ ] Informative note: The Flow's `profile` attribute is always required. It is the SDP transport file `profile-id` parameter that MAY be omited when matching the default value.
+  - [ ] Informative note: The Flow's `profile` attribute is always required. It is the SDP transport file `profile_space`, `profile-id`, `profile-compatibility-indicator` and `interop-constraints` parameters that MAY be omited when matching the default value.
   
+  - [ ] Informative note: The value of `profile_space`, `profile-id`, `profile-compatibility-indicator` and `interop-constraints` corresponds to the members profile_space, profile_idc, profile_compatibility_indication, progressive_source_flag, interlaced_source_flag, non_packed_constraint_flag, frame_only_constraint_flag and copied_44bits and  of the HEVC_video_descriptor of an MPEG2-TS transport stream.
+
 - [Level](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#level)  
   The Flow resource MUST indicate the H.264 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.264 bitstream. The Flow's `level` attribute map to the `profile-level-id` parameter of the SDP transport file which is OPTIONAL according to RFC 6184 and REQUIRED by this specification unless the `profile-level-id` parameter corresponds to the default value, in which case it MAY be omited.
   The permitted `level` values are strings, defined as per ITU-T Rec. H.264 Annex A
@@ -141,6 +146,8 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "6", "6.1", "6.2" 
   
   Informative note: The Flow's `level` attribute is always required. It is the SDP transport file `profile-level-id` parameter that MAY be omited when matching the default value.
+
+  Informative note: The value of `profile-level-id` corresponds to the members profile_idc, level_idc and constraint_set?_flag of the AVC_video_descriptor of an MPEG2-TS transport stream.
   
 - [ ] The Flow resource MUST indicate the H.265 level, which defines a set of limits on the values that may be taken by the syntax elements of an H.265 bitstream. The Flow's `level` attribute map to the `level-id` and `tier-flag` parameters of the SDP transport file which is OPTIONAL according to RFC 7798 and REQUIRED by this specification unless the `level-id` and `tier-flag` parameters correspond to the default value, in which case they MAY be omited.
   The permitted `level` values are strings, defined as per ITU-T Rec. H.265 Annex A
@@ -160,6 +167,8 @@ These attributes provide information for Controllers and Users to evaluate strea
   - "High-8.5"
 
   - [ ] Informative note: The Flow's `level` attribute is always required. It is the SDP transport file `level-id` and `tier-flag` parameters that MAY be omited when matching the default value.
+
+  - [ ] Informative note: The value of `level-id` and `tier-flag` corresponds to the members level_idc and tier_flag of the HEVC_video_descriptor of an MPEG2-TS transport stream.
 
 - [Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#bit-rate)  
   The Flow resource MUST indicate the target encoding bit rate (kilobits/second) of the H.264 bitstream. It SHALL comply with the stream's active parameter set associated parameters.
@@ -269,7 +278,7 @@ The H.264 encoder of a Sender MUST produces an H.264 bitstream that is compliant
 
 #### Parent Flows
 
-Flow resources can be associated with many Senders and many other Flows at the same time. A Flow resource MAY be the parent of many another Flow resources. A Sender associated with a Flow having some parents H.264 Flows MAY declare the `parameter_sets_flow_mode` and `parameter_sets_transport_mode` properties that apply for all the parents H.264 bistreams flowing through the Sender.
+Flow resources can be associated with many Senders and many other Flows at the same time. A Flow resource MAY be the parent of many another Flow resources. A Sender associated with a Flow having some H.264 parents Flows MAY declare the `parameter_sets_flow_mode` and `parameter_sets_transport_mode` properties that apply for all the parents H.264 bistreams flowing through the Sender.
 
 ## H.264 IS-04 Receivers
 
@@ -308,9 +317,11 @@ The following parameter constraints can be used to express limits or preferences
   - [ ] string enum possible values are: "strict", "static", "dynamic"
   - [ ] Target the `parameter_sets_flow_mode` of the Sender.
 
-  - A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using parameter sets associated to strictly one (`strict`), one (`static`) or multiple (`dynamic`) Flows. Considering that an active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable or not of decoding an H.264 bitstream where the associated Flow properties change dynamically. A Receiver supporting a `static` Flow SHOULD fail a PATCH if the parameter sets provided in the SDP transport file are associated to multiple Flows and it SHOULD become inactive if the parameter sets received in-band and out-of-band are associated to multiple Flows. A Receiver supporting a `strict` Flow SHOULD fail a PATCH if the SDP transport file provides picture parameter sets associated to multiple Flows or more than one sequence parameter set and it SHOULD become inactive if the picture parameter sets received in-band and out-of-band are associated to multiple Flows or result in more than one sequence parameter set. 
+  - A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using parameter sets associated to strictly one (`strict`), one (`static`) or multiple (`dynamic`) Flows. Considering that an active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable or not of decoding an H.264 bitstream where the associated Flow properties change dynamically. A Receiver supporting a `static` Flow SHOULD fail a PATCH if the parameter sets provided in the SDP transport file are associated to multiple Flows and it SHOULD become inactive if the parameter sets received in-band and out-of-band are associated to multiple Flows. A Receiver supporting a `strict` Flow SHOULD fail a PATCH if the SDP transport file provides picture parameter sets associated to multiple Flows or more than one sequence parameter set and it SHOULD become inactive if the picture parameter sets received in-band and out-of-band are not new or duplicates or are associated to multiple Flows or the in-band and out-of-band parameter sets contain more than one sequence parameter set.
  
-  - [ ] A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using parameter sets associated to strictly one (`strict`), one (`static`) or multiple (`dynamic`) Flows. Considering that an active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable or not of decoding an H.265 bitstream where the associated Flow properties change dynamically. A Receiver supporting a`static` Flow SHOULD fail a PATCH if the parameter sets provided in the SDP transport file are associated to multiple Flows and it SHOULD become inactive if the parameter sets received in-band and out-of-band are associated to multiple Flows. A Receiver supporting a `strict` Flow SHOULD fail a PATCH if the SDP transport file provides picture parameter sets associated to multiple Flows or more than one video and sequence parameter set and it SHOULD become inactive if the picture parameter sets received in-band and out-of-band are associated to multiple Flows or result in more than one video and sequence parameter set. 
+  - [ ] A Receiver declares the `parameter_sets_flow_mode` capability to indicate that it supports bitstreams using parameter sets associated to strictly one (`strict`), one (`static`) or multiple (`dynamic`) Flows. Considering that an active parameter set is associated to a specific Flow, this capability indicates that a Receiver is capable or not of decoding an H.265 bitstream where the associated Flow properties change dynamically. A Receiver supporting a`static` Flow SHOULD fail a PATCH if the parameter sets provided in the SDP transport file are associated to multiple Flows and it SHOULD become inactive if the parameter sets received in-band and out-of-band are associated to multiple Flows. A Receiver supporting a `strict` Flow SHOULD fail a PATCH if the SDP transport file provides picture parameter sets associated to multiple Flows or more than one video and sequence parameter set and it SHOULD become inactive if the picture parameter sets received in-band and out-of-band are not new or duplicates or are associated to multiple Flows or the in-band and out-of-band parameter sets contain more than one video and sequence parameter set.
+
+  Informative note: in strict mode one VPS, one SPS and multiple PPS can be defined once either out-of-band or in-band. They cannot be redefined unless strictly being duplicates.
 
   - A Receiver supporting the `dynamic` mode MUST also support the `strict` and `static` mode. Such Receiver SHOULD have `strict`, `static` and and `dynamic` values enumerated in the Receiver Capability in order to allow Senders operating in any `parameter_sets_flow_mode`.
 
@@ -326,7 +337,7 @@ The following parameter constraints can be used to express limits or preferences
 
  - A Receiver supporting `in_and_out_of_band` MUST also support the `in_band` and `out_of_band` modes. Such Receiver SHOULD have all "in_band", "out_of_band" and "in_and_out_of_band" values enumerated in the Receiver Capability in order to allow Senders operating in any `parameter_sets_transport_mode`.
 
-- [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported)
+ - [SAR Supported](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#sar-supported)
   - A Receiver supporting `aspect_ratio_idc` values that are defined as `Reserved` in Table E-1 of the [H.264][] specification indicate, such the maximum value of `aspect_ratio_idc` using this Receiver Capability. The `sar_supported` capability is an integer indicating the maximum value of `aspect_ratio_idc` smaller than 255 that the Receiver understands and support (`sar-understood` SHOULD be assumed to match `sar_supported`, both being defined in RFC 6184). The value of this parameter is an integer in the range of 1 to `sar-understood`, inclusive, equal to 255. The value of `sar_supported` equal to N smaller than 255 indicates that the receiver supports all the SARs corresponding to H.264 `aspect_ratio_idc` values (see Table E-1 of [H.264][]) in the range from 1 to N, inclusive, without geometric distortion.  The value of `sar-supported` equal to 255 indicates that the receiver supports all sample aspect ratios that are expressible using two 16-bit integer values as the numerator and denominator, i.e., those that are expressible using the H.264 `aspect_ratio_idc` value of 255 (Extended_SAR, see Table E-1 of [H.264][]), without geometric distortion.
 
   - [ ] A Receiver supporting `aspect_ratio_idc` values that are defined as `Reserved` in Table E-1 of the [H.265][] specification indicate, such the maximum value of `aspect_ratio_idc` using this Receiver Capability. The `sar_supported` attribute is an integer indicating the maximum value of `aspect_ratio_idc` smaller than 255 that the Receiver understands and support (`sar-understood` SHOULD be assumed to match `sar_supported`, both being defined in RFC 6184 and such definitions reused for H.265 as they are not part of RFC 7798). The value of this parameter is an integer in the range of 1 to `sar-understood`, inclusive, equal to 255. The value of `sar_supported` equal to N smaller than 255 indicates that the receiver supports all the SARs corresponding to H.265 `aspect_ratio_idc` values (see Table E-1 of [H.265][]) in the range from 1 to N, inclusive, without geometric distortion.  The value of `sar_supported` equal to 255 indicates that the receiver supports all sample aspect ratios that are expressible using two 16-bit integer values as the numerator and denominator, i.e., those that are expressible using the H.265 `aspect_ratio_idc` value of 255 (Extended_SAR, see Table E-1 of [H.265][]), without geometric distortion.
@@ -408,7 +419,7 @@ The `parameter_sets_flow_mode` Receiver Capability indicates when set to "dynami
 
 > The Flow bit_rate property is not included in the previous criterion to allow changing HRD parameters to adapt to IP usable bandwidth changing conditions in `static` mode.
 
-A Receiver with this capability set to "strict" requires that a coded stream uses picture parameter sets associated to at most one Flow and at most one sequence parameter set. Such parameter sets MAY be obtained out-of-band or in-band depending on the Receiver `parameter_sets_transport_mode` Capability. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MUST contain picture parameter sets associated to only one Flow and one sequence parameter set. When obtained in-band the `sprop-parameter-sets` parameter of an SDP transport file MUST be empty or omited and the Sender transmits the picture parameter sets associated to the Flow in-band along with a sequence parameter set. At all time, the Sender is allowed to transmit in-band parameter sets that are duplicates of the parameter sets obtained either out-of-band or in-band. When obtained in-and-out-of-band, in-band parameter sets have priority over out-of-band parameters sets.
+A Receiver with this capability set to "strict" requires that a coded stream uses picture parameter sets that are defined once and associated to at most one Flow and at most one sequence parameter set tha tis defined once. Such parameter sets MAY be obtained out-of-band or in-band depending on the Receiver `parameter_sets_transport_mode` Capability. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MUST contain picture parameter sets associated to only one Flow and one sequence parameter set. When obtained in-band the `sprop-parameter-sets` parameter of an SDP transport file MUST be empty or omited and the Sender transmits the picture parameter sets associated to the Flow in-band along with a sequence parameter set. At all time, the Sender is allowed to transmit in-band parameter sets that are duplicates of the parameter sets obtained either out-of-band or in-band. When obtained in-and-out-of-band, in-band parameter sets have priority over out-of-band parameters sets.
 
 A Receiver with this capability set to "static" requires that a coded stream uses parameter sets associated to at most one Flow. Such parameter sets MAY be obtained out-of-band or in-band depending on the Receiver `parameter_sets_transport_mode` Capability. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MUST contain parameter sets associated to only one Flow. When obtained in-band the `sprop-parameter-sets` parameter of an SDP transport file MUST be empty or omited and the Sender transmits the parameter sets associated to the Flow in-band. At all time, the Sender is allowed to transmit in-band parameter sets that are duplicates of the parameter sets obtained either out-of-band or in-band. When obtained in-and-out-of-band, in-band parameter sets have priority over out-of-band parameters sets.
 
@@ -417,6 +428,14 @@ Informative note: The "static" mode allows multiple VPS, SPS and PPS to be used 
 A Receiver with this capability set to "dynamic" supports that a coded stream uses parameter sets that MAY be associated to multiple Flows. Such parameter sets MAY be obtained out-of-band or in-band according to the Receiver `parameter_sets_transport_mode` Capability. When obtained out-of-band the `sprop-parameter-sets` parameter of an SDP transport file MAY contain parameter sets associated to multiple Flows. When obtained in-band the `sprop-parameter-sets` parameter of an SDP transport file MUST be empty or omited and the Sender MAY transmit in-band parameter sets to update parameter sets initially received out-of-band or to add and update new ones. At all time, the Sender is allowed to transmit in-band parameter sets that are duplicates of the parameter sets obtained either out-of-band or in-band. When obtained in-and-out-of-band, in-band parameter sets have priority over out-of-band parameters sets 
 
 A Sender is allowed, unless constrained by IS-11, to produces H.264 coded streams that comply with the `profile-level-id` declared in the Sender's SDP transport file and the `profile` and `level` of the associated Flow. Such a Sender MAY use one or multiple active parameter sets as per the [H.264] specification. A Sender MAY seamlessly change dynamically the coded stream's active parameter set, provided that the Flow associated with the Sender changes accordingly and the content of the SDP transport file does not change. If the content of the SDP transport file changes, the Sender SHALL comply with IS-04, IS-05. A Sender indicates its mode of operation with the `parameter_sets_flow_mode` and `parameter_sets_transport_mode` attributes.
+
+A Sender MUST transport parameter sets `in_band` when the H.264 stream is transmitted over an MPEG2-TS based transport as per the [H.222] specification.
+
+A Sender operating with `parameter_sets_flow_mode` set to `strict` MUST produce a coded bitstream using at most one VPS and at most one SPS and MAY use a number of PPS associated to at most one Flow. The parameter sets MUST be defined once in-band or out-of-band and MAY be refreshed by in-band duplicates.
+
+A Sender operating with `parameter_sets_flow_mode` set to `static` MAY produce a coded bitstream using a number of VPS, SPS and PPS that MUST be associated to at most one Flow. The parameter sets MAY be defined in-band or out-of-band and MAY be refreshed by in-band duplicates or updated by in-band values.
+
+A Sender operating with `parameter_sets_flow_mode` set to `dynamic` MAY produce a coded bitstream using a number of VPS, SPS and PPS that MAY be associated to at multiple Flows. The parameter sets MAY be defined in-band or out-of-band and MAY be refreshed by in-band duplicates or updated by in-band values.
 
 - [ ] Note to ST 2110-22: An H.264 stream will not be able to fully benefit from the seamless transitions of parameter sets because of the attributes width, height and exactframerate that are part of the SDP transport file are not allowed to change. 
 - [ ] Note to IPMX: An IPMX H.264 stream will not be able to benefit from the seamless transitions of parameter sets because of the attributes measuredpixclk, htotal and vtotal that are part of the SDP transport file are not allowed to change and cannot be inferred from the parameter sets. 
@@ -429,8 +448,9 @@ Controllers MUST support the BCP-004-01 Receiver Capabilities mechanism and all 
 - [ ] Controllers MUST support the BCP-004-01 Receiver Capabilities mechanism and all the parameter constraints listed in this specification in order to evaluate the stream compatibility between H.265 Senders and Receivers.
 
 [BCP-004-01]: https://specs.amwa.tv/bcp-004-01/ "AMWA BCP-004-01 NMOS Receiver Capabilities"
-[H.264]: https://www.itu.int/rec/T-REC-H.264/ " Advanced video coding for generic audiovisual services"
-[H.265]: https://www.itu.int/rec/T-REC-H.265/ " High efficiency video coding"
+[H.264]: https://www.itu.int/rec/T-REC-H.264 "Advanced video coding for generic audiovisual services"
+[H.265]: https://www.itu.int/rec/T-REC-H.265 "High efficiency video coding"
+[H.222]: https://www.itu.int/rec/T-REC-H.222.0 "Generic coding of moving pictures and associated audio information: Systems"
 [RFC-2119]: https://tools.ietf.org/html/rfc2119 "Key words for use in RFCs"
 [RFC-6184]: https://tools.ietf.org/html/rfc6184 "RTP Payload Format for H.264 Video"
 [RFC-7798]: https://tools.ietf.org/html/rfc7798 "RTP Payload Format for High Efficiency Video Coding (HEVC)"
