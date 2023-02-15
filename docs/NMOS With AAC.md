@@ -11,6 +11,8 @@ A companion RTP payload format specification was developed through the IETF Payl
 
 > RFC 3640 only support passing configuration information out-of-band while RFC 6416 support both in-band and out-of-band methods. When targetting MPEG2-TS transport the configuration information is provided in-band as per the H.222 specification.
 
+> RFC 6416 is used in declarative mode as per RFC 6116 section 7.4.1 "Declarative SDP Usage for MPEG-4 Audio".
+
 The [Video Services Forum][VSF] developed Technical Recommendation [TR-??][] and [TR-??][] of the IPMX suite of protocols, which cover the end-to-end application use of constant and variable bitrate compression for audio, using the SMPTE ST 2110 and IPMX suite of protocols.
 TR-?? and TR-?? mandate the use of the AMWA [IS-04][] and [IS-05][] NMOS Specifications in IPMX compliant systems.  
 
@@ -98,7 +100,7 @@ These attributes provide information for Controllers and Users to evaluate strea
 - [Constant Bit Rate](https://specs.amwa.tv/nmos-parameter-registers/branches/main/flow-attributes/#constant-bit-rate)
   The Flow resource MUST indicate if it operates une constant bit rate (CBR) mode or variable bit rate mode (VBR or other). When operating in CBR mode the `bit_rate` corresponds to the target constant encoding bit rate. Otherwise it corresponds to the maximum encoding bit rate. Since the default value of this attribute is `false`, the Flow MAY omit this attribute when using a variable bitrate mode.
 
-  Informative note: The maximum bit rate information relates to the codec profile / level limits and the Bit Reservoir buffering model. The CBR versus VBR mode of operation of the encoder provide essential clues about the coded bitstream produced.
+  Informative note: The maximum bit rate information relates to the codec profile / level limits and the Bit Reservoir buffering model. It corredponds to the maximum bitrate in any time window of one second duration as per ISO/IEC 14496-1. The CBR versus VBR mode of operation of the encoder provide essential clues about the coded bitstream produced.
 
   > !!! TODO: The target bitrate is propably more specifically the maximum bitrate that is used to calculate the buffering model betweenthe encoder and the decoder, aka bit reservoir, etc ... In variable bitrate mdoes, this would more precisely describe the stream. For constnt bitrate it is the target, for variable bitrate it is the maximum.
   > AAC specification indicates: 4.5.3.3 Maximum bit rate: The maximum bitrate depends on the audio sampling rate. It can be calculated based on the minimum input buffer size according to the formula: *** Table 4.126 – Maximum bitrate depending on the sampling frequency sampling_frequency maximum bitrate / NCC
@@ -127,12 +129,11 @@ Additionally, the SDP file needs to convey, so far as the defined parameters all
 Therefore:
   - The `profile-level-id` format-specific parameter MUST be included with the correct value.
   - [ ] TODO: check what can be done. Is this a maximum bitrate such that the sender could use any value lower than this maximum. It is expected that flexibility in changing the encoding bitrate is required. If static in the SDP file this may cause a problem.
-  - The `config` format-specific parameter MUST always be included. The hexadecimal value of the "config" parameter is the
-   AudioSpecificConfig(), as defined in ISO/IEC 14496-3
+  - The `config` format-specific parameter MUST MUST always be included if the Sender `parameter_sets_transport_mode` property is `out_of_band` or `in_and_out_of_band`. The hexadecimal value of the "config" parameter is the AudioSpecificConfig(), as defined in ISO/IEC 14496-3. Ex config=AB8902. To explicitely indicate that `parameter_sets_transport_mode` property is `in_band` the value "" MUST be used with RFC 3640. Ex config=""
   - The `mode` format-specific parameter MUST be included with the correct value for RFC 3640. Actually only the `AAC-hbr` mode is supported.
   - The `streamType` format-specific parameter MUST be included with the value 5 for RFC 3640. Actually only the `audio` stream type is supported.
   - The `maxDisplacement`, `constantDuration` and `de-interleaveBufferSize` format-specific parameters SHOULD be included with the correct value for RFC 3640 if the `packetization-mode` equals one of the interleaved modes.
-  - The `sizeLength`, `indexLength` and `indexDeltaLength` MUST always be included for RFC 3640 even if it defines them as optinal. Expected values for AAC-hbr are `sizeLength` = 13, `indexLength` = 3 and `indexDeltaLength` = 3.
+  - The `sizeLength`, `indexLength` and `indexDeltaLength` MUST always be included for RFC 3640 as only mode AAC-hbr is supported. Expected values for AAC-hbr are `sizeLength` = 13, `indexLength` = 3 and `indexDeltaLength` = 3.
 
 Informative note: The Flow bit_rate information is assumed to be conveyed according to the rules of the standards being implemented by the device. In some scenarios the encoding is not declared out-of-band through the SDP transport file but in-band through the coded stream.
 
@@ -156,6 +157,10 @@ In addition to those attributes defined in IS-04 for Senders, the following attr
 - [Parameter Sets Transport Mode](https://specs.amwa.tv/nmos-parameter-registers/branches/main/capabilities/#parameter-sets-transport-mode)
   - [ ] string enum possible values are: "in_band", "out_of_band", "in_and_out_of_band"
   - If a Sender operates with out-of-band parameter sets it MUST set the `parameter_sets_transport_mode` property to either `out_of_band` or `in_and_out_of_band`. Otherwise it MAY omit or set the `parameter_sets_transport_mode` property to `in_band`. If unspecified the default value is `in_band`. See the "Parameter Sets" section for more details.
+
+  RFC 3640 does not support the `in_band` mode such that `parameter_sets_transport_mode` MUST be set to `out_of_band`.
+
+  > From ISO/IEC 14496-3 "The header streams are transported via MPEG-4 systems. These streams contain configuration information, which is necessary for the decoding process and parsing of the raw data streams. However, an update is only necessary if there are changes in the configuration." AudioSpecificConfig is part of the header streams.
 
 An example Sender resource is provided in the [Examples](../examples/).
 
@@ -342,3 +347,6 @@ Controllers MUST support the BCP-004-01 Receiver Capabilities mechanism and all 
 [NMOS Parameter Registers]: https://specs.amwa.tv/nmos-parameter-registers/ "Common parameter values for AMWA NMOS Specifications"
 [VSF]: https://vsf.tv/ "Video Services Forum"
 [ST-2110-20]: https://ieeexplore.ieee.org/document/8167389 "ST 2110-20:2017 - SMPTE Standard - Professional Media Over Managed IP Networks: Uncompressed Active Video"
+
+
+- [ ] TODO: consider adding channel-order as per ST2110-30/31
