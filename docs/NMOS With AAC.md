@@ -1,4 +1,4 @@
-# AMWA BCP-006-02: NMOS With H.264
+# AMWA BCP-006-02: NMOS With AAC
 {:.no_toc}
 
 * A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
